@@ -46,6 +46,8 @@ public class Config {
 	public static Boolean vanillaCraftingRecipes = true;
 	public static Boolean vanillaFurnaceRecipes = true;
 	
+    public static int entityNetherfish = 667;
+	
 	private static final String CATEGORY_GENERAL_SETTINGS = "general settings";
 	private static final String CATEGORY_ORE_DICT_SETTINGS = "ore dictionary settings";
 	private static final String CATEGORY_MACHINE_RECIPE_SETTINGS = "machine recipe settings";
