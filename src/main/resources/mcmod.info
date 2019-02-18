@@ -1,0 +1,16 @@
+[
+{
+  "modid": "netherendingores",
+  "name": "Netherending Ores",
+  "description": "Netherending Ores",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://minecraft.curseforge.com/projects/netherending-ores/",
+  "updateUrl": "https://minecraft.curseforge.com/projects/netherending-ores/files/",
+  "authorList": ["ICannt Team"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
