@@ -31,6 +31,9 @@ public abstract class CommonProxy {
 
     public void init(FMLInitializationEvent event) {
     	RegistryEvents.registerRecipes();
+    	/* DISABLED NO API'S
+    	RegistryIntegrationEvents.registerIntegrationRecipes();
+    	*/
     }
 
     public void postInit(FMLPostInitializationEvent event) {
