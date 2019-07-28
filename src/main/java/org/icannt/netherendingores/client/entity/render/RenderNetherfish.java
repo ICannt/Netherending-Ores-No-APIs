@@ -1,6 +1,9 @@
 package org.icannt.netherendingores.client.entity.render;
 
 import org.icannt.netherendingores.lib.Info;
+
+import javax.annotation.Nonnull;
+
 import org.icannt.netherendingores.common.entity.EntityNetherfish;
 
 import net.minecraft.client.model.ModelSilverfish;
@@ -20,7 +23,7 @@ public class RenderNetherfish extends RenderLiving<EntityNetherfish> {
 	}
 	
 	@Override
-	protected float getDeathMaxRotation(EntityNetherfish entityLivingBaseIn) {
+	protected float getDeathMaxRotation(@Nonnull EntityNetherfish entityLivingBaseIn) {
 		return 180.0F;
 	}
 

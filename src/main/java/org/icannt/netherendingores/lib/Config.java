@@ -56,6 +56,7 @@ public class Config {
 	private static final String CATEGORY_RECIPE_INTEGRATION_SETTINGS = "recipe integration settings";
 	private static final String CATEGORY_RECIPE_MULTIPLIER_OVERRIDE = "recipe multipliers override";
 	private static final String CATEGORY_RECIPE_MULTIPLIER = "recipe multipliers";
+	private static final String CATEGORY_MOB_SETTINGS = "mob settings";
 	
 	private static int override = -1;
 	private static int minMult = 0;
@@ -73,6 +74,7 @@ public class Config {
             initMachineRecipeSettingsConfig(cfg);
             initRecipeMultiplierOverrideConfig(cfg);
             initRecipeMultiplierConfig(cfg);
+            initMobSettingsConfig(cfg);
         } catch (Exception e1) {
             Log.LOG.error("Problem loading config file!", e1);
         } finally {
@@ -177,6 +179,17 @@ public class Config {
     	
     	override = cfg.getInt("Override Multipliers", CATEGORY_RECIPE_MULTIPLIER_OVERRIDE, -1, -1, maxMult, "Change this setting to override all recipe multipliers, -1 means ignore.");
     	override = min(maxMult, max(-1, override));
+    	
+    }
+    
+    //
+    private static void initMobSettingsConfig(Configuration cfg) {
+    	
+    	cfg.addCustomCategoryComment(CATEGORY_MOB_SETTINGS, "All mob settings");
+    	
+    	//entityNetherfish  = cfg.getInt("Netherfish entity id number", CATEGORY_MOB_SETTINGS, entityNetherfish, 0, maxValue, comment);
+    	//override = cfg.getInt("Override Multipliers", CATEGORY_RECIPE_MULTIPLIER_OVERRIDE, -1, -1, maxMult, "Change this setting to override all recipe multipliers, -1 means ignore.");
+    	//override = min(maxMult, max(-1, override));
     	
     }
 
