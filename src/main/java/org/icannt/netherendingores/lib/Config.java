@@ -47,8 +47,19 @@ public class Config {
 	public static Boolean tinkersConstructRecipes = true;
 	public static Boolean vanillaCraftingRecipes = true;
 	public static Boolean vanillaFurnaceRecipes = true;
+		
+	private static int override = -1;
+	private static int minMult = 0;
+	private static int maxMult = 3;
 	
-    public static int entityNetherfish = 667;
+    public static int netherfishEntityId = 667;
+    public static boolean netherfishEnable = true;
+    public static double netherfishAttackDamage = 1.0D;
+    public static double netherfishKnockbackResistance = 1.0D;
+    public static double netherfishMaxHealth = 10.0D;
+    public static double netherfishMaxSpeed = 0.33D;
+    public static boolean netherfishSetFire = true;
+    public static boolean netherfishWAILA = true;
 	
 	private static final String CATEGORY_GENERAL_SETTINGS = "general settings";
 	private static final String CATEGORY_ORE_DICT_SETTINGS = "ore dictionary settings";
@@ -57,11 +68,7 @@ public class Config {
 	private static final String CATEGORY_RECIPE_MULTIPLIER_OVERRIDE = "recipe multipliers override";
 	private static final String CATEGORY_RECIPE_MULTIPLIER = "recipe multipliers";
 	private static final String CATEGORY_MOB_SETTINGS = "mob settings";
-	
-	private static int override = -1;
-	private static int minMult = 0;
-	private static int maxMult = 3;
-	
+
 	    
     public static void readConfig() {
         Configuration cfg = CommonProxy.config;
@@ -187,10 +194,14 @@ public class Config {
     	
     	cfg.addCustomCategoryComment(CATEGORY_MOB_SETTINGS, "All mob settings");
     	
-    	//entityNetherfish  = cfg.getInt("Netherfish entity id number", CATEGORY_MOB_SETTINGS, entityNetherfish, 0, maxValue, comment);
-    	//override = cfg.getInt("Override Multipliers", CATEGORY_RECIPE_MULTIPLIER_OVERRIDE, -1, -1, maxMult, "Change this setting to override all recipe multipliers, -1 means ignore.");
-    	//override = min(maxMult, max(-1, override));
-    	
+        //netherfishEnable = cfg.getBoolean("Netherfish Enable", CATEGORY_MOB_SETTINGS, netherfishEnable, "Enable Netherfish so the mob is active.");
+        netherfishAttackDamage = cfg.get(CATEGORY_MOB_SETTINGS, "Netherfish attack damage", netherfishAttackDamage, "Netherfish attack damage multiplier").getDouble();
+        netherfishKnockbackResistance = cfg.get(CATEGORY_MOB_SETTINGS, "Netherfish knockback resistance", netherfishKnockbackResistance, "Netherfish knockback resistance multiplier").getDouble();
+        netherfishMaxHealth = cfg.get(CATEGORY_MOB_SETTINGS, "Netherfish maximum health", netherfishMaxHealth, "Netherfish maximum health in half hearts").getDouble();
+        netherfishMaxSpeed = cfg.get(CATEGORY_MOB_SETTINGS, "Netherfish maximum speed", netherfishMaxSpeed, "Netherfish maximum speed multiplier").getDouble();
+        netherfishSetFire = cfg.getBoolean("Netherfish Set Fire", CATEGORY_MOB_SETTINGS, netherfishSetFire, "Enables the Netherfish to set the player on fire during attack.");
+        netherfishWAILA = cfg.getBoolean("Netherfish WAILA/HWYLA", CATEGORY_MOB_SETTINGS, netherfishWAILA, "Enables the Netherfish spawn blocks to be hidden from WAILA/HWYLA i.e. show as Netherrack.");
+    	    	
     }
 
 }
