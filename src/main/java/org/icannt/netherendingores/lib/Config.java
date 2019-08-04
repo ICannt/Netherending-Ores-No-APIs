@@ -2,6 +2,7 @@ package org.icannt.netherendingores.lib;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static org.icannt.netherendingores.lib.MathUtil.minMax;
 
 import org.icannt.netherendingores.common.registry.BlockRecipeData;
 import org.icannt.netherendingores.common.registry.OreDictionaryOtherData;
@@ -60,6 +61,21 @@ public class Config {
     public static double netherfishMaxSpeed = 0.33D;
     public static boolean netherfishSetFire = true;
     public static boolean netherfishWAILA = true;
+    
+    public static boolean zombiePigmanAnger = true;
+    public static int zombiePigmanAngerRangeRadius = 32;
+    public static int zombiePigmanAngerRangeRadiusMin = 1;
+    public static int zombiePigmanAngerRangeRadiusMax = 64;
+    public static int zombiePigmanAngerRangeHeight = 16;
+    public static int zombiePigmanAngerRangeHeightMin = 1;
+    public static int zombiePigmanAngerRangeHeightMax = 32;
+    public static boolean zombiePigmanAngerSilktouch = true;
+
+    public static boolean oreExplosionEnable = true;
+    public static double oreExplosionChance = 0.125D;
+    public static double oreExplosionStrength = 4.0D;
+    public static boolean oreExplosionFortune = true;
+    public static boolean oreExplosionSilktouch = true;
 	
 	private static final String CATEGORY_GENERAL_SETTINGS = "general settings";
 	private static final String CATEGORY_ORE_DICT_SETTINGS = "ore dictionary settings";
@@ -67,7 +83,8 @@ public class Config {
 	private static final String CATEGORY_RECIPE_INTEGRATION_SETTINGS = "recipe integration settings";
 	private static final String CATEGORY_RECIPE_MULTIPLIER_OVERRIDE = "recipe multipliers override";
 	private static final String CATEGORY_RECIPE_MULTIPLIER = "recipe multipliers";
-	private static final String CATEGORY_MOB_SETTINGS = "mob settings";
+	private static final String CATEGORY_MOB_NETHERRFISH = "mob netherfish settings";
+	private static final String CATEGORY_MOB_ZOMBIE_PIGMAN = "mob zombie pigman settings";
 
 	    
     public static void readConfig() {
@@ -81,7 +98,8 @@ public class Config {
             initMachineRecipeSettingsConfig(cfg);
             initRecipeMultiplierOverrideConfig(cfg);
             initRecipeMultiplierConfig(cfg);
-            initMobSettingsConfig(cfg);
+            initNetherfishSettingsConfig(cfg);
+            initZombiePigmanSettingsConfig(cfg);
         } catch (Exception e1) {
             Log.LOG.error("Problem loading config file!", e1);
         } finally {
@@ -174,8 +192,8 @@ public class Config {
     	int multiplier = 0;    	
     	for (BlockRecipeData blockData : BlockRecipeData.values()) {
     		multiplier = cfg.get(CATEGORY_RECIPE_MULTIPLIER, StringUtil.spaceCapital(blockData.getName()), blockData.getDefaultRecipeMultiplier()).getInt();
-    		multiplier = min(maxMult, max(minMult, multiplier));
-    		if (override > -1) multiplier = min(maxMult, max(minMult, override));
+    		multiplier = minMax(minMult, maxMult, multiplier);
+    		if (override > -1) multiplier = minMax(minMult, maxMult, override);
     		blockData.setRecipeMultiplier(multiplier);
 		} 
     	
@@ -185,23 +203,38 @@ public class Config {
     private static void initRecipeMultiplierOverrideConfig(Configuration cfg) {
     	
     	override = cfg.getInt("Override Multipliers", CATEGORY_RECIPE_MULTIPLIER_OVERRIDE, -1, -1, maxMult, "Change this setting to override all recipe multipliers, -1 means ignore.");
-    	override = min(maxMult, max(-1, override));
+    	override = minMax(-1, maxMult, override);
     	
     }
     
     //
-    private static void initMobSettingsConfig(Configuration cfg) {
+    private static void initNetherfishSettingsConfig(Configuration cfg) {
     	
-    	cfg.addCustomCategoryComment(CATEGORY_MOB_SETTINGS, "All mob settings");
+    	cfg.addCustomCategoryComment(CATEGORY_MOB_NETHERRFISH, "Netherfish settings");
     	
-        //netherfishEnable = cfg.getBoolean("Netherfish Enable", CATEGORY_MOB_SETTINGS, netherfishEnable, "Enable Netherfish so the mob is active.");
-        netherfishAttackDamage = cfg.get(CATEGORY_MOB_SETTINGS, "Netherfish attack damage", netherfishAttackDamage, "Netherfish attack damage multiplier").getDouble();
-        netherfishKnockbackResistance = cfg.get(CATEGORY_MOB_SETTINGS, "Netherfish knockback resistance", netherfishKnockbackResistance, "Netherfish knockback resistance multiplier").getDouble();
-        netherfishMaxHealth = cfg.get(CATEGORY_MOB_SETTINGS, "Netherfish maximum health", netherfishMaxHealth, "Netherfish maximum health in half hearts").getDouble();
-        netherfishMaxSpeed = cfg.get(CATEGORY_MOB_SETTINGS, "Netherfish maximum speed", netherfishMaxSpeed, "Netherfish maximum speed multiplier").getDouble();
-        netherfishSetFire = cfg.getBoolean("Netherfish Set Fire", CATEGORY_MOB_SETTINGS, netherfishSetFire, "Enables the Netherfish to set the player on fire during attack.");
-        netherfishWAILA = cfg.getBoolean("Netherfish WAILA/HWYLA", CATEGORY_MOB_SETTINGS, netherfishWAILA, "Enables the Netherfish spawn blocks to be hidden from WAILA/HWYLA i.e. show as Netherrack.");
+        netherfishEnable = cfg.getBoolean("Netherfish enable", CATEGORY_MOB_NETHERRFISH, netherfishEnable, "Enable Netherfish so the mob is active.");
+        netherfishAttackDamage = cfg.get(CATEGORY_MOB_NETHERRFISH, "Netherfish attack damage", netherfishAttackDamage, "Netherfish attack damage multiplier").getDouble();
+        netherfishKnockbackResistance = cfg.get(CATEGORY_MOB_NETHERRFISH, "Netherfish knockback resistance", netherfishKnockbackResistance, "Netherfish knockback resistance multiplier").getDouble();
+        netherfishMaxHealth = cfg.get(CATEGORY_MOB_NETHERRFISH, "Netherfish maximum health", netherfishMaxHealth, "Netherfish maximum health in half hearts").getDouble();
+        netherfishMaxSpeed = cfg.get(CATEGORY_MOB_NETHERRFISH, "Netherfish maximum speed", netherfishMaxSpeed, "Netherfish maximum speed multiplier").getDouble();
+        netherfishSetFire = cfg.getBoolean("Netherfish set fire", CATEGORY_MOB_NETHERRFISH, netherfishSetFire, "Enables the Netherfish to set the player on fire during attack.");
+        netherfishWAILA = cfg.getBoolean("Netherfish WAILA/HWYLA", CATEGORY_MOB_NETHERRFISH, netherfishWAILA, "Enables the Netherfish spawn blocks to be hidden from WAILA/HWYLA i.e. show as Netherrack.");
     	    	
+    }
+    
+    private static void initZombiePigmanSettingsConfig(Configuration cfg) {
+    	
+    	cfg.addCustomCategoryComment(CATEGORY_MOB_ZOMBIE_PIGMAN, "Zombie Pigman settings");
+    	
+    	zombiePigmanAnger = cfg.getBoolean("Zombie Pigman anger", CATEGORY_MOB_ZOMBIE_PIGMAN, zombiePigmanAnger, "Enables the Zombie Pigman anger reaction to mining ores.");
+    	zombiePigmanAngerRangeRadius = cfg.getInt("Zombie Pigman anger range radius", CATEGORY_MOB_ZOMBIE_PIGMAN, zombiePigmanAngerRangeRadiusMin, zombiePigmanAngerRangeRadiusMax, zombiePigmanAngerRangeRadius, "Zombie Pigman anger reaction range square radius in blocks around the player.");
+    	zombiePigmanAngerRangeHeight = cfg.getInt("Zombie Pigman anger range height", CATEGORY_MOB_ZOMBIE_PIGMAN, zombiePigmanAngerRangeHeightMin, zombiePigmanAngerRangeHeightMax, zombiePigmanAngerRangeHeight, "Zombie Pigman anger reaction range height in blocks up and down of the player.");
+    	zombiePigmanAngerSilktouch = cfg.getBoolean("Zombie Pigman Anger Silktouch", CATEGORY_MOB_ZOMBIE_PIGMAN, zombiePigmanAngerSilktouch, "If ores are mined with a silk touch enchantment Zombie pigmen won't react.");
+    	
+    }
+    
+    private static void initOreExplosionConfig(Configuration cfg) {
+    	//TODO
     }
 
 }

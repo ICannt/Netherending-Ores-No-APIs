@@ -1,6 +1,7 @@
 package org.icannt.netherendingores.common.registry;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.icannt.netherendingores.client.block.ItemBlockBasic;
@@ -20,13 +21,26 @@ import org.icannt.netherendingores.common.block.blocks.BlockOreNetherModded1;
 import org.icannt.netherendingores.common.block.blocks.BlockOreNetherModded2;
 import org.icannt.netherendingores.common.block.blocks.BlockOreNetherVanilla;
 import org.icannt.netherendingores.common.block.blocks.BlockOreOther1;
+import org.icannt.netherendingores.lib.Config;
 import org.icannt.netherendingores.lib.Info;
 import org.icannt.netherendingores.lib.Log;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -78,7 +92,18 @@ public class BlockRegistry {
         ORE_NETHER_MODDED_2,
         ORE_NETHER_VANILLA,
         ORE_OTHER_1
-    };    
+    };
+    
+    private static Block[] oreBlocks = {
+        ORE_END_MODDED_1,
+        ORE_END_MODDED_2,
+        ORE_END_VANILLA,
+        ORE_NETHER_MODDED_1,
+        ORE_NETHER_MODDED_2,
+        ORE_NETHER_VANILLA,
+        ORE_OTHER_1,
+        Blocks.QUARTZ_ORE
+    };
     
     private static final ItemBlock[] itemBlocks = {
     	new ItemBlockBasic(CREATIVE_TAB),
@@ -94,6 +119,7 @@ public class BlockRegistry {
     
     @Mod.EventBusSubscriber
     public static class RegistrationHandler {
+    	
         public static final Set<ItemBlock> ITEM_BLOCKS = new HashSet<>();
 
         @SubscribeEvent
@@ -127,6 +153,89 @@ public class BlockRegistry {
 
     }
     
+    @Mod.EventBusSubscriber
+    public static class BlockEventHandler {
+    	
+    	@SubscribeEvent
+	    public static void onBlockBreak(BlockEvent.BreakEvent event) {
+	    	
+	        boolean silktouch = hasEnchant(event.getPlayer(), Enchantments.SILK_TOUCH);
+	        boolean fortune = hasEnchant(event.getPlayer(), Enchantments.FORTUNE);
+	
+	        World world = event.getWorld();
+	        BlockPos blockPos = event.getPos();
+	        IBlockState blockState = event.getState();
+	        EntityPlayer player = event.getPlayer();
+	
+	        if (Config.zombiePigmanAnger && isAngeringOre(blockState)) {
+	            if (!(silktouch && Config.zombiePigmanAngerSilktouch)) angerPigmen(world, blockPos, player);
+	        }
+	
+	        if (Config.oreExplosionEnable && isExplodingOre(blockState) && !player.isCreative()) {
+	
+	            int multi = Config.oreExplosionFortune && fortune ? 2 : 1;
+	
+	            if (!(silktouch && Config.oreExplosionSilktouch)) {
+	                if (world.rand.nextDouble() <= Config.oreExplosionChance * multi) {
+	                    world.createExplosion(player, blockPos.getX(), blockPos.getY(), blockPos.getZ(), (float) Config.oreExplosionStrength, true);
+	                }
+	            }
+	
+	        }
+	
+	    }
+    }
+
+    private static void angerPigmen(World world, BlockPos blockPos, EntityPlayer player) {
+
+        BlockPos start = new BlockPos(blockPos).add(-Config.zombiePigmanAngerRangeRadius, -Config.zombiePigmanAngerRangeHeight, -Config.zombiePigmanAngerRangeRadius);
+        BlockPos end = new BlockPos(blockPos).add(+Config.zombiePigmanAngerRangeRadius, +Config.zombiePigmanAngerRangeHeight, +Config.zombiePigmanAngerRangeRadius);
+
+        AxisAlignedBB aabb  = new AxisAlignedBB(start, end);
+
+        List<EntityPigZombie> list = world.getEntitiesWithinAABB(EntityPigZombie.class, aabb);
+        for (EntityPigZombie pigman : list) pigman.setRevengeTarget(player);
+
+    }
+
+    private static boolean hasEnchant(EntityPlayer player, Enchantment enchant) {
+
+        if (player == null || player.getHeldItemMainhand().isEmpty()) return false;
+
+        NBTTagList list = player.getHeldItemMainhand().getEnchantmentTagList();
+
+        for (int i = 0; i < list.tagCount(); i++) {
+            short enchantId = list.getCompoundTagAt(i).getShort("id");
+            if (Enchantment.getEnchantmentByID(enchantId) == enchant) return true;
+        }
+
+        return false;
+
+    }
+
+    private static boolean isAngeringOre(IBlockState blockState) {
+
+        //if (Loader.isModLoaded("tconstruct") && blockState.getBlock() == TinkerCommons.blockOre) return true;
+        //if (blockState == TFBlocks.blockOreFluid.getStateFromMeta(3)) return true;
+    	
+        for (Block block : oreBlocks) {
+        	if (blockState.getBlock() == block) return true;
+        }
+
+        return false;
+
+    }
+    
+    private static boolean isExplodingOre(IBlockState blockState) {
+    	
+        for (Block block : oreBlocks) {
+        	if (blockState.getBlock() == block) return true;
+        }
+
+        return false;
+
+    }
+        
     @SideOnly(Side.CLIENT)
     public static void initModels() {
     	CREATIVE_TAB.initItemBlockModels();
