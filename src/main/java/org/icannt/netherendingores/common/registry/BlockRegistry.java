@@ -168,14 +168,14 @@ public class BlockRegistry {
 	        EntityPlayer player = event.getPlayer();
 	
 	        if (Config.zombiePigmanAnger && isAngeringOre(blockState)) {
-	            if (!(silktouch && Config.zombiePigmanAngerSilktouch)) angerPigmen(world, blockPos, player);
+	            if (!(silktouch && Config.zombiePigmanAngerSilkTouch)) angerPigmen(world, blockPos, player);
 	        }
 	
 	        if (Config.oreExplosionEnable && isExplodingOre(blockState) && !player.isCreative()) {
 	
 	            int multi = Config.oreExplosionFortune && fortune ? 2 : 1;
 	
-	            if (!(silktouch && Config.oreExplosionSilktouch)) {
+	            if (!(silktouch && Config.oreExplosionSilkTouch)) {
 	                if (world.rand.nextDouble() <= Config.oreExplosionChance * multi) {
 	                    world.createExplosion(player, blockPos.getX(), blockPos.getY(), blockPos.getZ(), (float) Config.oreExplosionStrength, true);
 	                }

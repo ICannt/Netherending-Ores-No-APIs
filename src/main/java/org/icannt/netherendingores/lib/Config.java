@@ -1,7 +1,5 @@
 package org.icannt.netherendingores.lib;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 import static org.icannt.netherendingores.lib.MathUtil.minMax;
 
 import org.icannt.netherendingores.common.registry.BlockRecipeData;
@@ -69,13 +67,13 @@ public class Config {
     public static int zombiePigmanAngerRangeHeight = 16;
     public static int zombiePigmanAngerRangeHeightMin = 1;
     public static int zombiePigmanAngerRangeHeightMax = 32;
-    public static boolean zombiePigmanAngerSilktouch = true;
+    public static boolean zombiePigmanAngerSilkTouch = true;
 
-    public static boolean oreExplosionEnable = true;
+    public static boolean oreExplosionEnable = true; // TODO: This needs to be per ore
     public static double oreExplosionChance = 0.125D;
     public static double oreExplosionStrength = 4.0D;
     public static boolean oreExplosionFortune = true;
-    public static boolean oreExplosionSilktouch = true;
+    public static boolean oreExplosionSilkTouch = true;
 	
 	private static final String CATEGORY_GENERAL_SETTINGS = "general settings";
 	private static final String CATEGORY_ORE_DICT_SETTINGS = "ore dictionary settings";
@@ -85,6 +83,7 @@ public class Config {
 	private static final String CATEGORY_RECIPE_MULTIPLIER = "recipe multipliers";
 	private static final String CATEGORY_MOB_NETHERRFISH = "mob netherfish settings";
 	private static final String CATEGORY_MOB_ZOMBIE_PIGMAN = "mob zombie pigman settings";
+	private static final String CATEGORY_ORE_EXPLOSION = "ore explosion settings";
 
 	    
     public static void readConfig() {
@@ -100,6 +99,7 @@ public class Config {
             initRecipeMultiplierConfig(cfg);
             initNetherfishSettingsConfig(cfg);
             initZombiePigmanSettingsConfig(cfg);
+            initOreExplosionConfig(cfg);
         } catch (Exception e1) {
             Log.LOG.error("Problem loading config file!", e1);
         } finally {
@@ -229,12 +229,19 @@ public class Config {
     	zombiePigmanAnger = cfg.getBoolean("Zombie Pigman anger", CATEGORY_MOB_ZOMBIE_PIGMAN, zombiePigmanAnger, "Enables the Zombie Pigman anger reaction to mining ores.");
     	zombiePigmanAngerRangeRadius = cfg.getInt("Zombie Pigman anger range radius", CATEGORY_MOB_ZOMBIE_PIGMAN, zombiePigmanAngerRangeRadiusMin, zombiePigmanAngerRangeRadiusMax, zombiePigmanAngerRangeRadius, "Zombie Pigman anger reaction range square radius in blocks around the player.");
     	zombiePigmanAngerRangeHeight = cfg.getInt("Zombie Pigman anger range height", CATEGORY_MOB_ZOMBIE_PIGMAN, zombiePigmanAngerRangeHeightMin, zombiePigmanAngerRangeHeightMax, zombiePigmanAngerRangeHeight, "Zombie Pigman anger reaction range height in blocks up and down of the player.");
-    	zombiePigmanAngerSilktouch = cfg.getBoolean("Zombie Pigman Anger Silktouch", CATEGORY_MOB_ZOMBIE_PIGMAN, zombiePigmanAngerSilktouch, "If ores are mined with a silk touch enchantment Zombie pigmen won't react.");
+    	zombiePigmanAngerSilkTouch = cfg.getBoolean("Zombie Pigman anger silk touch", CATEGORY_MOB_ZOMBIE_PIGMAN, zombiePigmanAngerSilkTouch, "If ores are mined with a silk touch enchantment Zombie pigmen won't react.");
     	
     }
     
     private static void initOreExplosionConfig(Configuration cfg) {
-    	//TODO
+    	
+    	cfg.addCustomCategoryComment(CATEGORY_ORE_EXPLOSION, "Ore explosion settings");
+    	
+    	oreExplosionChance = cfg.get(CATEGORY_ORE_EXPLOSION, "Ore explosion chance", oreExplosionChance, "Ore explosion chance, 1 = all the time.").getDouble();
+    	oreExplosionStrength = cfg.get(CATEGORY_ORE_EXPLOSION, "Ore explosion strength", oreExplosionStrength, "Ore explosion strength, 4 = TNT strength.").getDouble();  	
+    	oreExplosionFortune = cfg.getBoolean("Ore explosion fortune", CATEGORY_ORE_EXPLOSION, oreExplosionFortune, "If ores are mined with a fortune enchantment their explosion chance is multiplied by the recipe multiplier. Only affects ores that are set to drop items.");
+    	oreExplosionSilkTouch = cfg.getBoolean("Ore explosion silk touch", CATEGORY_ORE_EXPLOSION, oreExplosionSilkTouch, "If ores are mined with a silk touch enchantment they won't explode at all.");
+
     }
 
 }
