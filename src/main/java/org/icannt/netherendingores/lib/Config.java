@@ -47,9 +47,9 @@ public class Config {
 	public static Boolean vanillaCraftingRecipes = true;
 	public static Boolean vanillaFurnaceRecipes = true;
 		
-	private static int override = -1;
-	private static int minMult = 0;
-	private static int maxMult = 3;
+	private static int recipeMultiplierOverride = -1;
+	private static int recipeMinimumMultiplier = 0;
+	private static int recipeMaximumMultiplier = 3;
 	
     public static int netherfishEntityId = 667;
     public static boolean netherfishEnable = true;
@@ -69,7 +69,8 @@ public class Config {
     public static int zombiePigmanAngerRangeHeightMax = 32;
     public static boolean zombiePigmanAngerSilkTouch = true;
 
-    public static boolean oreExplosionEnable = true; // TODO: This needs to be per ore
+    public static boolean oreExplosionEnableOverride = false;
+    public static boolean oreExplosionEnableOverrideSetting = false;
     public static double oreExplosionChance = 0.125D;
     public static double oreExplosionStrength = 4.0D;
     public static boolean oreExplosionFortune = true;
@@ -79,7 +80,7 @@ public class Config {
 	private static final String CATEGORY_ORE_DICT_SETTINGS = "ore dictionary settings";
 	private static final String CATEGORY_MACHINE_RECIPE_SETTINGS = "machine recipe settings";
 	private static final String CATEGORY_RECIPE_INTEGRATION_SETTINGS = "recipe integration settings";
-	private static final String CATEGORY_RECIPE_MULTIPLIER_OVERRIDE = "recipe multipliers override";
+	private static final String CATEGORY_RECIPE_MULTIPLIER_OVERRIDE = "recipe multipliers recipeMultiplierOverride";
 	private static final String CATEGORY_RECIPE_MULTIPLIER = "recipe multipliers";
 	private static final String CATEGORY_MOB_NETHERRFISH = "mob netherfish settings";
 	private static final String CATEGORY_MOB_ZOMBIE_PIGMAN = "mob zombie pigman settings";
@@ -90,7 +91,7 @@ public class Config {
         Configuration cfg = CommonProxy.config;
         try {
             cfg.load();
-            // Load order is different so the override will load first, the forge config sorter will change the position anyway.
+            // Load order is different so the recipeMultiplierOverride will load first, the forge config sorter will change the position anyway.
             initGeneralSettingsConfig(cfg);
             initOreDictSettingsConfig(cfg);
             initRecipeIntegrationSettingsConfig(cfg);
@@ -192,8 +193,8 @@ public class Config {
     	int multiplier = 0;    	
     	for (BlockRecipeData blockData : BlockRecipeData.values()) {
     		multiplier = cfg.get(CATEGORY_RECIPE_MULTIPLIER, StringUtil.spaceCapital(blockData.getName()), blockData.getDefaultRecipeMultiplier()).getInt();
-    		multiplier = minMax(minMult, maxMult, multiplier);
-    		if (override > -1) multiplier = minMax(minMult, maxMult, override);
+    		multiplier = minMax(recipeMinimumMultiplier, recipeMaximumMultiplier, multiplier);
+    		if (recipeMultiplierOverride > -1) multiplier = minMax(recipeMinimumMultiplier, recipeMaximumMultiplier, recipeMultiplierOverride);
     		blockData.setRecipeMultiplier(multiplier);
 		} 
     	
@@ -202,8 +203,8 @@ public class Config {
     //
     private static void initRecipeMultiplierOverrideConfig(Configuration cfg) {
     	
-    	override = cfg.getInt("Override Multipliers", CATEGORY_RECIPE_MULTIPLIER_OVERRIDE, -1, -1, maxMult, "Change this setting to override all recipe multipliers, -1 means ignore.");
-    	override = minMax(-1, maxMult, override);
+    	recipeMultiplierOverride = cfg.getInt("Override Multipliers", CATEGORY_RECIPE_MULTIPLIER_OVERRIDE, -1, -1, recipeMaximumMultiplier, "Change this setting to recipeMultiplierOverride all recipe multipliers, -1 means ignore.");
+    	recipeMultiplierOverride = minMax(-1, recipeMaximumMultiplier, recipeMultiplierOverride);
     	
     }
     
@@ -241,7 +242,27 @@ public class Config {
     	oreExplosionStrength = cfg.get(CATEGORY_ORE_EXPLOSION, "Ore explosion strength", oreExplosionStrength, "Ore explosion strength, 4 = TNT strength.").getDouble();  	
     	oreExplosionFortune = cfg.getBoolean("Ore explosion fortune", CATEGORY_ORE_EXPLOSION, oreExplosionFortune, "If ores are mined with a fortune enchantment their explosion chance is multiplied by the recipe multiplier. Only affects ores that are set to drop items.");
     	oreExplosionSilkTouch = cfg.getBoolean("Ore explosion silk touch", CATEGORY_ORE_EXPLOSION, oreExplosionSilkTouch, "If ores are mined with a silk touch enchantment they won't explode at all.");
-
+    }
+    	
+    private static void initOreExplosionEnabledConfig(Configuration cfg) {
+    	
+    	boolean explosion = true;
+    	
+    	//REQUIRES DEFAULT SETTING OVERWORLD ORES WILL HAVE IT OFF BY DEFAULT
+    	
+    	for (BlockRecipeData blockData : BlockRecipeData.values()) {
+    		explosion = cfg.get(CATEGORY_ORE_EXPLOSION, StringUtil.spaceCapital(blockData.getName()), explosion).getBoolean();
+    		if (oreExplosionEnableOverride) explosion = oreExplosionEnableOverrideSetting;
+    		blockData.setOreExplosion(explosion);
+    	}
+    	
+	}
+    	
+    private static void initOreExplosionEnabledOverrideConfig(Configuration cfg) {
+    	
+    	oreExplosionEnableOverride = cfg.getBoolean("Ore Explosion Enable Override", CATEGORY_ORE_EXPLOSION, oreExplosionEnableOverride, "Enables the ability");
+    	oreExplosionEnableOverrideSetting = cfg.getBoolean("Ore explosion fortune", CATEGORY_ORE_EXPLOSION, oreExplosionEnableOverrideSetting, "If ores are mined with a fortune enchantment their explosion chance is multiplied by the recipe multiplier. Only affects ores that are set to drop items.");
+    	
     }
 
 }
