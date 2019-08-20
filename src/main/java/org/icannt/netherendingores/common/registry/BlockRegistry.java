@@ -94,6 +94,7 @@ public class BlockRegistry {
         ORE_OTHER_1
     };
     
+    /*
     private static Block[] oreBlocks = {
         ORE_END_MODDED_1,
         ORE_END_MODDED_2,
@@ -104,6 +105,17 @@ public class BlockRegistry {
         ORE_OTHER_1,
         Blocks.QUARTZ_ORE
     };
+    */
+    
+    private static Block[] oreBlocks = {
+            ORE_END_MODDED_1,
+            ORE_END_MODDED_2,
+            ORE_END_VANILLA,
+            ORE_NETHER_MODDED_1,
+            ORE_NETHER_MODDED_2,
+            ORE_NETHER_VANILLA,
+            ORE_OTHER_1
+        };
     
     private static final ItemBlock[] itemBlocks = {
     	new ItemBlockBasic(CREATIVE_TAB),
@@ -171,16 +183,18 @@ public class BlockRegistry {
 	            if (!(silktouch && Config.zombiePigmanAngerSilkTouch)) angerPigmen(world, blockPos, player);
 	        }
 	
-	        if (Config.oreExplosionEnable && isExplodingOre(blockState) && !player.isCreative()) {
-	
-	            int multi = Config.oreExplosionFortune && fortune ? 2 : 1;
-	
-	            if (!(silktouch && Config.oreExplosionSilkTouch)) {
-	                if (world.rand.nextDouble() <= Config.oreExplosionChance * multi) {
-	                    world.createExplosion(player, blockPos.getX(), blockPos.getY(), blockPos.getZ(), (float) Config.oreExplosionStrength, true);
-	                }
-	            }
-	
+	        if (!player.isCreative()) {
+		        if (isExplodingOre(blockState)) {
+		
+		            int multi = Config.oreExplosionFortune && fortune ? 2 : 1;
+		
+		            if (!(silktouch && Config.oreExplosionSilkTouch)) {
+		                if (world.rand.nextDouble() <= Config.oreExplosionChance * multi) {
+		                    world.createExplosion(player, blockPos.getX(), blockPos.getY(), blockPos.getZ(), (float) Config.oreExplosionStrength, true);
+		                }
+		            }
+		
+		        }
 	        }
 	
 	    }
@@ -226,16 +240,34 @@ public class BlockRegistry {
 
     }
     
+    //
     private static boolean isExplodingOre(IBlockState blockState) {
     	
+    	IBlockState result = null;
+    	
         for (Block block : oreBlocks) {
-        	if (blockState.getBlock() == block) return true;
+        	if (blockState.getBlock() == block) {
+        		result = blockState;
+        		break;
+        	}
         }
-
+    	
+        if (result != null) {       
+	        for (BlockRecipeData blockData : BlockRecipeData.values()) {
+	        	if (blockData.getBlockState() == result) {
+	        		if (blockData.getOreExplosion()) {
+	        			return true;
+	        		} else {
+	        			break;
+	        		}
+	        	}
+	        }
+        }
+        
         return false;
 
     }
-        
+    
     @SideOnly(Side.CLIENT)
     public static void initModels() {
     	CREATIVE_TAB.initItemBlockModels();

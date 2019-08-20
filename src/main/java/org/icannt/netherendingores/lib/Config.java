@@ -80,11 +80,13 @@ public class Config {
 	private static final String CATEGORY_ORE_DICT_SETTINGS = "ore dictionary settings";
 	private static final String CATEGORY_MACHINE_RECIPE_SETTINGS = "machine recipe settings";
 	private static final String CATEGORY_RECIPE_INTEGRATION_SETTINGS = "recipe integration settings";
-	private static final String CATEGORY_RECIPE_MULTIPLIER_OVERRIDE = "recipe multipliers recipeMultiplierOverride";
+	private static final String CATEGORY_RECIPE_MULTIPLIER_OVERRIDE = "recipe multipliers override";
 	private static final String CATEGORY_RECIPE_MULTIPLIER = "recipe multipliers";
 	private static final String CATEGORY_MOB_NETHERRFISH = "mob netherfish settings";
 	private static final String CATEGORY_MOB_ZOMBIE_PIGMAN = "mob zombie pigman settings";
-	private static final String CATEGORY_ORE_EXPLOSION = "ore explosion settings";
+	private static final String CATEGORY_ORE_EXPLOSION = "ore explosion base settings";
+	private static final String CATEGORY_ORE_EXPLOSION_ENABLED = "ore explosion enabled all settings";
+	private static final String CATEGORY_ORE_EXPLOSION_ENABLED_OVERRIDE = "ore explosion enabled override settings";
 
 	    
     public static void readConfig() {
@@ -101,6 +103,8 @@ public class Config {
             initNetherfishSettingsConfig(cfg);
             initZombiePigmanSettingsConfig(cfg);
             initOreExplosionConfig(cfg);
+            initOreExplosionEnabledOverrideConfig(cfg);
+            initOreExplosionEnabledConfig(cfg);
         } catch (Exception e1) {
             Log.LOG.error("Problem loading config file!", e1);
         } finally {
@@ -190,9 +194,9 @@ public class Config {
     			+ "3 = Crush to 4x oredict ore | Smelt to 3x oredict ore.\r\n"
     			+ "    Oredict entries prefixed with \"oreDenseEnd\", \"oreDenseNether\" or \"oreDenseOverworld\" respectively.\r\n");
     	
-    	int multiplier = 0;    	
+    	int multiplier;    	
     	for (BlockRecipeData blockData : BlockRecipeData.values()) {
-    		multiplier = cfg.get(CATEGORY_RECIPE_MULTIPLIER, StringUtil.spaceCapital(blockData.getName()), blockData.getDefaultRecipeMultiplier()).getInt();
+    		multiplier = cfg.get(CATEGORY_RECIPE_MULTIPLIER, StringUtil.spaceCapital(blockData.getName()), blockData.getRecipeMultiplier()).getInt();
     		multiplier = minMax(recipeMinimumMultiplier, recipeMaximumMultiplier, multiplier);
     		if (recipeMultiplierOverride > -1) multiplier = minMax(recipeMinimumMultiplier, recipeMaximumMultiplier, recipeMultiplierOverride);
     		blockData.setRecipeMultiplier(multiplier);
@@ -203,7 +207,7 @@ public class Config {
     //
     private static void initRecipeMultiplierOverrideConfig(Configuration cfg) {
     	
-    	recipeMultiplierOverride = cfg.getInt("Override Multipliers", CATEGORY_RECIPE_MULTIPLIER_OVERRIDE, -1, -1, recipeMaximumMultiplier, "Change this setting to recipeMultiplierOverride all recipe multipliers, -1 means ignore.");
+    	recipeMultiplierOverride = cfg.getInt("Override Multipliers", CATEGORY_RECIPE_MULTIPLIER_OVERRIDE, -1, -1, recipeMaximumMultiplier, "Change this setting to override all recipe multipliers, -1 means ignore.");
     	recipeMultiplierOverride = minMax(-1, recipeMaximumMultiplier, recipeMultiplierOverride);
     	
     }
@@ -243,15 +247,15 @@ public class Config {
     	oreExplosionFortune = cfg.getBoolean("Ore explosion fortune", CATEGORY_ORE_EXPLOSION, oreExplosionFortune, "If ores are mined with a fortune enchantment their explosion chance is multiplied by the recipe multiplier. Only affects ores that are set to drop items.");
     	oreExplosionSilkTouch = cfg.getBoolean("Ore explosion silk touch", CATEGORY_ORE_EXPLOSION, oreExplosionSilkTouch, "If ores are mined with a silk touch enchantment they won't explode at all.");
     }
-    	
+
+    //
     private static void initOreExplosionEnabledConfig(Configuration cfg) {
     	
-    	boolean explosion = true;
+    	cfg.addCustomCategoryComment(CATEGORY_ORE_EXPLOSION_ENABLED, "Ore explosion enabled settings");
     	
-    	//REQUIRES DEFAULT SETTING OVERWORLD ORES WILL HAVE IT OFF BY DEFAULT
-    	
+    	boolean explosion;
     	for (BlockRecipeData blockData : BlockRecipeData.values()) {
-    		explosion = cfg.get(CATEGORY_ORE_EXPLOSION, StringUtil.spaceCapital(blockData.getName()), explosion).getBoolean();
+    		explosion = cfg.get(CATEGORY_ORE_EXPLOSION_ENABLED, StringUtil.spaceCapital(blockData.getName()), blockData.getOreExplosion()).getBoolean();
     		if (oreExplosionEnableOverride) explosion = oreExplosionEnableOverrideSetting;
     		blockData.setOreExplosion(explosion);
     	}
@@ -260,8 +264,8 @@ public class Config {
     	
     private static void initOreExplosionEnabledOverrideConfig(Configuration cfg) {
     	
-    	oreExplosionEnableOverride = cfg.getBoolean("Ore Explosion Enable Override", CATEGORY_ORE_EXPLOSION, oreExplosionEnableOverride, "Enables the ability");
-    	oreExplosionEnableOverrideSetting = cfg.getBoolean("Ore explosion fortune", CATEGORY_ORE_EXPLOSION, oreExplosionEnableOverrideSetting, "If ores are mined with a fortune enchantment their explosion chance is multiplied by the recipe multiplier. Only affects ores that are set to drop items.");
+    	oreExplosionEnableOverride = cfg.getBoolean("Ore explosion override enable", CATEGORY_ORE_EXPLOSION_ENABLED_OVERRIDE, oreExplosionEnableOverride, "Enables the ability to override all the ore explosion settings with one setting.");
+    	oreExplosionEnableOverrideSetting = cfg.getBoolean("Ore explosion override", CATEGORY_ORE_EXPLOSION_ENABLED_OVERRIDE, oreExplosionEnableOverrideSetting, "Enable or disable ore explosions with one setting, needs to be active first with the above setting.");
     	
     }
 
