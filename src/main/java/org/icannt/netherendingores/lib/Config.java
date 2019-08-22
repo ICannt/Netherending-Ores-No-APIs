@@ -85,7 +85,7 @@ public class Config {
 	private static final String CATEGORY_MOB_NETHERRFISH = "mob netherfish settings";
 	private static final String CATEGORY_MOB_ZOMBIE_PIGMAN = "mob zombie pigman settings";
 	private static final String CATEGORY_ORE_EXPLOSION = "ore explosion base settings";
-	private static final String CATEGORY_ORE_EXPLOSION_ENABLED = "ore explosion enabled all settings";
+	private static final String CATEGORY_ORE_EXPLOSION_ENABLED = "ore explosion enabled base settings";
 	private static final String CATEGORY_ORE_EXPLOSION_ENABLED_OVERRIDE = "ore explosion enabled override settings";
 
 	    
