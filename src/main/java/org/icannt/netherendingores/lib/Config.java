@@ -46,7 +46,10 @@ public class Config {
 	public static Boolean tinkersConstructRecipes = true;
 	public static Boolean vanillaCraftingRecipes = true;
 	public static Boolean vanillaFurnaceRecipes = true;
-		
+	
+    public static boolean furnaceToItemEnableOverride = false;
+    public static boolean furnaceToItemEnableOverrideSetting = false;
+	
 	private static int recipeMultiplierOverride = -1;
 	private static int recipeMinimumMultiplier = 0;
 	private static int recipeMaximumMultiplier = 3;
@@ -79,6 +82,8 @@ public class Config {
 	private static final String CATEGORY_GENERAL_SETTINGS = "general settings";
 	private static final String CATEGORY_ORE_DICT_SETTINGS = "ore dictionary settings";
 	private static final String CATEGORY_MACHINE_RECIPE_SETTINGS = "machine recipe settings";
+	private static final String CATEGORY_FURNACE_TO_ITEM_ENABLED = "furnace to item enabled base settings";
+	private static final String CATEGORY_FURNACE_TO_ITEM_ENABLED_OVERRIDE = "furnace to item enabled override settings";
 	private static final String CATEGORY_RECIPE_INTEGRATION_SETTINGS = "recipe integration settings";
 	private static final String CATEGORY_RECIPE_MULTIPLIER_OVERRIDE = "recipe multipliers override";
 	private static final String CATEGORY_RECIPE_MULTIPLIER = "recipe multipliers";
@@ -93,11 +98,13 @@ public class Config {
         Configuration cfg = CommonProxy.config;
         try {
             cfg.load();
-            // Load order is different so the recipeMultiplierOverride will load first, the forge config sorter will change the position anyway.
+            // Load order is different so overrides will load first, the forge config sorter will change the position anyway.
             initGeneralSettingsConfig(cfg);
             initOreDictSettingsConfig(cfg);
             initRecipeIntegrationSettingsConfig(cfg);
             initMachineRecipeSettingsConfig(cfg);
+            initFurnaceToItemEnabledOverrideConfig(cfg);
+            initFurnaceToItemEnabledConfig(cfg);           
             initRecipeMultiplierOverrideConfig(cfg);
             initRecipeMultiplierConfig(cfg);
             initNetherfishSettingsConfig(cfg);
@@ -183,6 +190,27 @@ public class Config {
     }
 
     //
+    private static void initFurnaceToItemEnabledConfig(Configuration cfg) {
+    	
+    	cfg.addCustomCategoryComment(CATEGORY_FURNACE_TO_ITEM_ENABLED, "Ore explosion enabled settings");
+    	
+    	boolean setting;
+    	for (BlockRecipeData blockData : BlockRecipeData.values()) {
+    		setting = cfg.get(CATEGORY_FURNACE_TO_ITEM_ENABLED, StringUtil.spaceCapital(blockData.getName()), blockData.getFurnaceRecipeToItem()).getBoolean();
+    		if (furnaceToItemEnableOverride) setting = furnaceToItemEnableOverrideSetting;
+    		blockData.setFurnaceRecipeToItem(setting);
+    	}
+    	
+	}
+    	
+    private static void initFurnaceToItemEnabledOverrideConfig(Configuration cfg) {
+    	
+    	furnaceToItemEnableOverride = cfg.getBoolean("Furnace to item override enable", CATEGORY_FURNACE_TO_ITEM_ENABLED_OVERRIDE, furnaceToItemEnableOverride, "Enables the ability to override all the furnace to item settings with one setting.");
+    	furnaceToItemEnableOverrideSetting = cfg.getBoolean("Furnace to item override setting", CATEGORY_FURNACE_TO_ITEM_ENABLED_OVERRIDE, furnaceToItemEnableOverrideSetting, "Enable or disable furnace to item with one setting, needs to be active first with the above setting.");
+    	
+    }
+    
+    //
     private static void initRecipeMultiplierConfig(Configuration cfg) {
     	
     	cfg.addCustomCategoryComment(CATEGORY_RECIPE_MULTIPLIER, ""
@@ -253,19 +281,19 @@ public class Config {
     	
     	cfg.addCustomCategoryComment(CATEGORY_ORE_EXPLOSION_ENABLED, "Ore explosion enabled settings");
     	
-    	boolean explosion;
+    	boolean setting;
     	for (BlockRecipeData blockData : BlockRecipeData.values()) {
-    		explosion = cfg.get(CATEGORY_ORE_EXPLOSION_ENABLED, StringUtil.spaceCapital(blockData.getName()), blockData.getOreExplosion()).getBoolean();
-    		if (oreExplosionEnableOverride) explosion = oreExplosionEnableOverrideSetting;
-    		blockData.setOreExplosion(explosion);
+    		setting = cfg.get(CATEGORY_ORE_EXPLOSION_ENABLED, StringUtil.spaceCapital(blockData.getName()), blockData.getOreExplosion()).getBoolean();
+    		if (oreExplosionEnableOverride) setting = oreExplosionEnableOverrideSetting;
+    		blockData.setOreExplosion(setting);
     	}
     	
 	}
     	
     private static void initOreExplosionEnabledOverrideConfig(Configuration cfg) {
     	
-    	oreExplosionEnableOverride = cfg.getBoolean("Ore explosion override enable", CATEGORY_ORE_EXPLOSION_ENABLED_OVERRIDE, oreExplosionEnableOverride, "Enables the ability to override all the ore explosion settings with one setting.");
-    	oreExplosionEnableOverrideSetting = cfg.getBoolean("Ore explosion override", CATEGORY_ORE_EXPLOSION_ENABLED_OVERRIDE, oreExplosionEnableOverrideSetting, "Enable or disable ore explosions with one setting, needs to be active first with the above setting.");
+    	oreExplosionEnableOverride = cfg.getBoolean("Ore explosion override enable", CATEGORY_ORE_EXPLOSION_ENABLED_OVERRIDE, oreExplosionEnableOverride, "Enables the ability to override all the ore explosion enabled settings with one setting.");
+    	oreExplosionEnableOverrideSetting = cfg.getBoolean("Ore explosion override setting", CATEGORY_ORE_EXPLOSION_ENABLED_OVERRIDE, oreExplosionEnableOverrideSetting, "Enable or disable ore explosions with one setting, needs to be active first with the above setting.");
     	
     }
 

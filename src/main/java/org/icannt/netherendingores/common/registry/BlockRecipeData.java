@@ -172,6 +172,16 @@ public enum BlockRecipeData implements IStringSerializable {
     }
 	
     //
+	public boolean getFurnaceRecipeToItem() {
+    	return furnaceRecipeToItem;
+    }	
+	
+	//
+	public void setFurnaceRecipeToItem(boolean setting) {
+		this.furnaceRecipeToItem = setting;
+	}
+	
+    //
     public Ingredient[] getConversionIngredient() {
 		return new Ingredient[]{Ingredient.fromStacks(getModBlockItemStack())};
     }
@@ -219,7 +229,7 @@ public enum BlockRecipeData implements IStringSerializable {
 		material = material == "name" ? name : material;
 		switch (type) {
 			case "smelt":
-				if (multiplier == 1) {
+				if (multiplier == 1 || (multiplier > 1 && furnaceRecipeToItem)) {
 					return getOreDictSmeltItemName(itemOreDictPrefix, material);
 				}
 				break;
