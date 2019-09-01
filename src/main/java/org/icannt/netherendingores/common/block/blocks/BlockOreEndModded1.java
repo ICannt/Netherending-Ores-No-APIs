@@ -1,7 +1,10 @@
 package org.icannt.netherendingores.common.block.blocks;
 
+import java.util.Random;
+
 import org.icannt.netherendingores.common.block.BlockVariantBase;
 import org.icannt.netherendingores.common.block.data.BlockDataOreEndModded1;
+import org.icannt.netherendingores.common.registry.BlockRecipeData;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -13,6 +16,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
@@ -29,6 +33,8 @@ public class BlockOreEndModded1 extends BlockVariantBase {
 
     private static final PropertyEnum<BlockDataOreEndModded1> VARIANT = PropertyEnum.create("blocks", BlockDataOreEndModded1.class);
 
+    //private static final BlockOreEndModded1 SELF = new BlockOreEndModded1();
+    
     public BlockOreEndModded1() {
         super(Material.ROCK, MapColor.GRAY, "ore_end_modded_1");
         for (BlockDataOreEndModded1 variant : BlockDataOreEndModded1.values()) {
@@ -36,6 +42,11 @@ public class BlockOreEndModded1 extends BlockVariantBase {
         }
     }
 
+//    public static BlockOreEndModded1 instance()
+//    {
+//        return SELF;
+//    }
+    
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, VARIANT);
@@ -62,7 +73,45 @@ public class BlockOreEndModded1 extends BlockVariantBase {
 
     @Override
     public int damageDropped(IBlockState state) {
+    	
+    	int ordinal = processDropped(state);
+    	
+    	if (BlockRecipeData.values()[ordinal].getDropItemNotBlock()) {
+    		BlockRecipeData.values()[ordinal].getDamageDropped();
+    	}
+    	
         return getMetaFromState(state);
+    }
+    
+    @Override
+    public int quantityDropped(IBlockState state, int fortune, Random random) {
+    	
+    	int ordinal = processDropped(state);
+    	
+    	if (BlockRecipeData.values()[ordinal].getDropItemNotBlock()) {
+    		BlockRecipeData.values()[ordinal].getQuantityDropped();
+    	}
+    	
+    	return 1;
+    	
+    }
+        
+    @Override
+    public Item getItemDropped(IBlockState state, Random random, int fortune) {
+    	
+    	int ordinal = processDropped(state);
+
+    	if (BlockRecipeData.values()[ordinal].getDropItemNotBlock()) {
+    		BlockRecipeData.values()[ordinal].getItemDropped();
+    	}
+    	
+    	return Item.getItemFromBlock(this);
+    	
+    }
+    
+    //
+    public int processDropped(IBlockState state) {
+    	return BlockDataOreEndModded1.values()[getMetaFromState(state)].getBlockRecipeDataOrdinal();
     }
 
     @Override

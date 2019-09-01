@@ -95,6 +95,9 @@ public class BlockRegistry {
     };
     
     /*
+        Blocks.QUARTZ_ORE
+    */
+    
     private static Block[] oreBlocks = {
         ORE_END_MODDED_1,
         ORE_END_MODDED_2,
@@ -102,20 +105,8 @@ public class BlockRegistry {
         ORE_NETHER_MODDED_1,
         ORE_NETHER_MODDED_2,
         ORE_NETHER_VANILLA,
-        ORE_OTHER_1,
-        Blocks.QUARTZ_ORE
+        ORE_OTHER_1
     };
-    */
-    
-    private static Block[] oreBlocks = {
-            ORE_END_MODDED_1,
-            ORE_END_MODDED_2,
-            ORE_END_VANILLA,
-            ORE_NETHER_MODDED_1,
-            ORE_NETHER_MODDED_2,
-            ORE_NETHER_VANILLA,
-            ORE_OTHER_1
-        };
     
     private static final ItemBlock[] itemBlocks = {
     	new ItemBlockBasic(CREATIVE_TAB),
@@ -254,7 +245,7 @@ public class BlockRegistry {
     	
         if (result != null) {       
 	        for (BlockRecipeData blockData : BlockRecipeData.values()) {
-	        	if (blockData.getBlockState() == result) {
+	        	if (blockData.getModBlockState() == result) {
 	        		if (blockData.getOreExplosion()) {
 	        			return true;
 	        		} else {
