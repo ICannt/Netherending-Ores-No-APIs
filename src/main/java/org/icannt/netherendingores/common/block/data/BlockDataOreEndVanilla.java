@@ -1,5 +1,7 @@
 package org.icannt.netherendingores.common.block.data;
 
+import org.icannt.netherendingores.lib.Log;
+
 import net.minecraft.item.EnumRarity;
 import net.minecraft.util.IStringSerializable;
 
@@ -60,6 +62,11 @@ public enum BlockDataOreEndVanilla implements IStringSerializable {
     public EnumRarity getRarity() {
         return rarity;
     }
+    
+    //
+	public int getBlockRecipeDataOrdinal() {
+		return blockRecipeDataOrdinal;
+	}
     
     //
 	public void setBlockRecipeDataOrdinal(int ordinal) {

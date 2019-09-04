@@ -32,8 +32,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockOreEndModded1 extends BlockVariantBase {
 
     private static final PropertyEnum<BlockDataOreEndModded1> VARIANT = PropertyEnum.create("blocks", BlockDataOreEndModded1.class);
-
-    //private static final BlockOreEndModded1 SELF = new BlockOreEndModded1();
     
     public BlockOreEndModded1() {
         super(Material.ROCK, MapColor.GRAY, "ore_end_modded_1");
@@ -41,11 +39,6 @@ public class BlockOreEndModded1 extends BlockVariantBase {
         	this.setHarvestLevel("pickaxe", variant.getHarvestLevel(), getStateFromMeta(variant.ordinal()));
         }
     }
-
-//    public static BlockOreEndModded1 instance()
-//    {
-//        return SELF;
-//    }
     
     @Override
     protected BlockStateContainer createBlockState() {
@@ -74,23 +67,14 @@ public class BlockOreEndModded1 extends BlockVariantBase {
     @Override
     public int damageDropped(IBlockState state) {
     	
-    	int ordinal = processDropped(state);
-    	
-    	if (BlockRecipeData.values()[ordinal].getDropItemNotBlock()) {
-    		BlockRecipeData.values()[ordinal].getDamageDropped();
-    	}
+
     	
         return getMetaFromState(state);
     }
     
     @Override
     public int quantityDropped(IBlockState state, int fortune, Random random) {
-    	
-    	int ordinal = processDropped(state);
-    	
-    	if (BlockRecipeData.values()[ordinal].getDropItemNotBlock()) {
-    		BlockRecipeData.values()[ordinal].getQuantityDropped();
-    	}
+
     	
     	return 1;
     	
@@ -99,7 +83,7 @@ public class BlockOreEndModded1 extends BlockVariantBase {
     @Override
     public Item getItemDropped(IBlockState state, Random random, int fortune) {
     	
-    	int ordinal = processDropped(state);
+    	int ordinal = getOrdinal(state);
 
     	if (BlockRecipeData.values()[ordinal].getDropItemNotBlock()) {
     		BlockRecipeData.values()[ordinal].getItemDropped();
@@ -110,7 +94,7 @@ public class BlockOreEndModded1 extends BlockVariantBase {
     }
     
     //
-    public int processDropped(IBlockState state) {
+    public int getOrdinal(IBlockState state) {
     	return BlockDataOreEndModded1.values()[getMetaFromState(state)].getBlockRecipeDataOrdinal();
     }
 

@@ -1,7 +1,12 @@
 package org.icannt.netherendingores.common.block.blocks;
 
+import java.util.Random;
+
 import org.icannt.netherendingores.common.block.BlockVariantBase;
+import org.icannt.netherendingores.common.block.data.BlockDataOreEndModded1;
 import org.icannt.netherendingores.common.block.data.BlockDataOreEndVanilla;
+import org.icannt.netherendingores.common.registry.BlockRecipeData;
+import org.icannt.netherendingores.lib.Log;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -62,7 +67,47 @@ public class BlockOreEndVanilla extends BlockVariantBase {
 
     @Override
     public int damageDropped(IBlockState state) {
+    	
+    	int ordinal = getOrdinal(state);
+    	
+    	if (BlockRecipeData.values()[ordinal].getDropItemNotBlock()) {
+    		return BlockRecipeData.values()[ordinal].getDamageDropped();
+    	}
+    	
         return getMetaFromState(state);
+    }
+    
+    @Override
+    public int quantityDropped(IBlockState state, int fortune, Random random) {
+    	
+    	int ordinal = getOrdinal(state);
+    	
+    	if (BlockRecipeData.values()[ordinal].getDropItemNotBlock()) {
+    		Log.info("Random: " + random);
+    		Log.info("Fortune: " + fortune);
+    		return BlockRecipeData.values()[ordinal].getQuantityDropped(fortune, random);
+    	}
+    	
+    	return 1;
+    	
+    }
+        
+    @Override
+    public Item getItemDropped(IBlockState state, Random random, int fortune) {
+    	
+    	int ordinal = getOrdinal(state);
+
+    	if (BlockRecipeData.values()[ordinal].getDropItemNotBlock()) {
+    		return BlockRecipeData.values()[ordinal].getItemDropped();
+    	}
+    	
+    	return Item.getItemFromBlock(this);
+    	
+    }
+    
+    //
+    public int getOrdinal(IBlockState state) {
+    	return BlockDataOreEndVanilla.values()[getMetaFromState(state)].getBlockRecipeDataOrdinal();
     }
 
     @Override
