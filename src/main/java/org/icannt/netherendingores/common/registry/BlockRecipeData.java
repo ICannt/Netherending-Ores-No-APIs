@@ -111,7 +111,7 @@ public enum BlockRecipeData implements IStringSerializable {
     private boolean dropItemNotBlock;
     private int dropItemQuantityMin;
     private int dropItemQuantityMax;
-    private int dropItemExperience;
+    private int dropItemExperience; // TODO: Needs an implementation and research on how much to drop.
     private boolean furnaceRecipeEnabled;
     private boolean furnaceRecipeToItem;
     private int recipeMultiplier;
@@ -155,8 +155,14 @@ public enum BlockRecipeData implements IStringSerializable {
 	
 	//
 	public boolean getDropItemNotBlock() {
-		//return dropItemNotBlock;
-		return true;
+		
+		if (recipeMultiplier > 0)
+		{
+			return dropItemNotBlock;
+		}
+		
+		return false;
+		
 	}
 	
 	//
@@ -199,15 +205,11 @@ public enum BlockRecipeData implements IStringSerializable {
     public int getQuantityDropped(int fortune, Random random) {
     	
     	int bonus = fortune > 0 ? random.nextInt(fortune + 1) + 1 : 1;
-    	Log.info("Bonus: " + bonus);
     	int extra = dropItemQuantityMax - dropItemQuantityMin;
-    	Log.info("Extra: " + extra);
-    	extra = extra > 0 ? random.nextInt(extra) : 0;
-    	Log.info("Extra Random: " + extra);
-    	
-    	Log.info("Return Qty: " + (dropItemQuantityMin + extra * bonus));
-    	
+    	extra = extra > 0 ? random.nextInt(extra + 1) : 0;
     	return dropItemQuantityMin + extra * bonus;
+    	
+    	// TODO: Needs recipe multiplier implementation.
     	
     }
     

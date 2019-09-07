@@ -13,7 +13,7 @@ public class Log {
     
 	public static String[] LOG_RECIPE_MSG = { "", "", "" };
 	
-	public static Boolean isRecipeAddedAlready = false;
+	public static boolean isRecipeAddedAlready = false;
 	
 	public static void trace(String msg) {
 		if (Config.advancedDebugging) LOG.trace(msg);
@@ -33,6 +33,10 @@ public class Log {
 	
 	public static void error(String msg) {
 		LOG.error(msg);
+	}
+	
+	public static void error(String msg, Exception e1) {
+		LOG.error(msg, e1);
 	}
 
 	public static void fatal(String msg) {

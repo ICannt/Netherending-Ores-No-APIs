@@ -14,6 +14,9 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+# Windows shortcut files
+*.lnk
+
 # OSX
 # =========================
 

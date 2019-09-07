@@ -35,6 +35,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 public class EntityNetherfish extends EntitySilverfish {
 
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(Info.MOD_ID, "entities/netherfish");
+	
 	private EntityNetherfish.AISummonNetherfish summonNetherfish;
 	
 	public EntityNetherfish(World worldIn) {
@@ -51,7 +52,7 @@ public class EntityNetherfish extends EntitySilverfish {
         super.applyEntityAttributes();
         
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.netherfishMaxHealth);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(Config.netherfishMaxSpeed);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(Config.netherfishMovementSpeed);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(Config.netherfishAttackDamage);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(Config.netherfishKnockbackResistance);
         

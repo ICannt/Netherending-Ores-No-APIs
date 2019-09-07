@@ -6,6 +6,7 @@ import org.icannt.netherendingores.lib.EntityInit;
 import org.icannt.netherendingores.common.block.data.CacheBlockRecipeDataOrdinals;
 import org.icannt.netherendingores.common.registry.RegistryEvents;
 import org.icannt.netherendingores.lib.Config;
+import org.icannt.netherendingores.lib.ConfigEx;
 import org.icannt.netherendingores.lib.Info;
 
 import net.minecraftforge.common.config.Configuration;
@@ -21,12 +22,12 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod.EventBusSubscriber
 public abstract class CommonProxy {
 
-	public static Configuration config;
+	public static ConfigEx config;
 	
     public void preInit(FMLPreInitializationEvent event) {
     	CacheBlockRecipeDataOrdinals.cacheOrdinals();
         File directory = event.getModConfigurationDirectory();
-        config = new Configuration(new File(directory.getPath(), "Netherending Ores.cfg"), Info.CFG_VERSION);
+        config = new ConfigEx(new File(directory.getPath(), "Netherending Ores.cfg"), Info.CFG_VERSION);
         Config.readConfig();
     	EntityInit.registerEntities();
     }
