@@ -29,7 +29,7 @@ public enum BlockDataOreEndModded2 implements IStringSerializable {
     private EnumRarity rarity;
     private int blockRecipeDataOrdinal;
 
-    BlockDataOreEndModded2(String name, int light, int harvestLevel, float hardness, float resistance, EnumRarity rarity, int blockRecipeDataOrdina) {
+    BlockDataOreEndModded2(String name, int light, int harvestLevel, float hardness, float resistance, EnumRarity rarity, int blockRecipeDataOrdinal) {
 
         this.name = name;
         this.light = light;
@@ -65,6 +65,11 @@ public enum BlockDataOreEndModded2 implements IStringSerializable {
     public EnumRarity getRarity() {
         return rarity;
     }
+    
+    //
+	public int getBlockRecipeDataOrdinal() {
+		return blockRecipeDataOrdinal;
+	}
     
     //
 	public void setBlockRecipeDataOrdinal(int ordinal) {

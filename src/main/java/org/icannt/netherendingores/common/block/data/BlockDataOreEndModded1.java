@@ -1,7 +1,5 @@
 package org.icannt.netherendingores.common.block.data;
 
-import org.icannt.netherendingores.common.registry.BlockRecipeData;
-
 import net.minecraft.item.EnumRarity;
 import net.minecraft.util.IStringSerializable;
 

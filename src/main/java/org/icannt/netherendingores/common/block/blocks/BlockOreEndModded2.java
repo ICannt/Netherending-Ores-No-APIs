@@ -81,6 +81,11 @@ public class BlockOreEndModded2 extends BlockVariantBase {
         return world.getBlockState(pos).getValue(VARIANT).getResistance() / 5F;
     }
     
+    @Override
+    public int getOrdinal(IBlockState state) {
+    	return BlockDataOreEndModded2.values()[getMetaFromState(state)].getBlockRecipeDataOrdinal();
+    }
+    
     @SideOnly(Side.CLIENT)
     public void initItemBlockModels() {
     	for (BlockDataOreEndModded2 variant : BlockDataOreEndModded2.values()) {

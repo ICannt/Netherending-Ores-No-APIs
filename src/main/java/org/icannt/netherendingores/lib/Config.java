@@ -10,7 +10,7 @@ import static net.minecraft.util.math.MathHelper.clamp;
  * Created by ICannt on 25/03/18.
  */
 
-// TODO: Go through and filter everything to be within min/max ranges. Can't get this to work :/
+// TODO: 
 public class Config {
 	
 	// General
@@ -47,6 +47,9 @@ public class Config {
     public static boolean zombiePigmanAngerSilkTouch = true;
 
     // Ores
+    
+    public static boolean dropItems = false;
+    public static boolean dropItemsOverride = false;
     
     public static boolean oreExplosion = false;
     public static double oreExplosionChance = 0.125D;
@@ -109,6 +112,8 @@ public class Config {
 	private static final String CATEGORY_MOBS__ZOMBIE_PIGMAN = "mobs.zombie pigman";
 	
 	private static final String CATEGORY_ORES = "ores";
+	private static final String CATEGORY_ORES__DROP_ITEMS = "ores.drop items";
+	private static final String CATEGORY_ORES__DROP_ITEMS__DROP_ITEM_ORES = "ores.drop items.drop item ores";
 	private static final String CATEGORY_ORES__ORE_DICTIONARY = "ores.ore dictionary";
 	private static final String CATEGORY_ORES__ORE_EXPLOSIONS = "ores.ore explosions";
 	private static final String CATEGORY_ORES__ORE_EXPLOSIONS__ORE_EXPLOSION_ORES = "ores.ore explosions.ore explosion ores";
@@ -149,6 +154,8 @@ public class Config {
         initMobsZombiePigmanConfig(cfg, CATEGORY_MOBS__ZOMBIE_PIGMAN);
         
         initOresOreDictionaryConfig(cfg, CATEGORY_ORES__ORE_DICTIONARY);
+        initOresDropItems(cfg, CATEGORY_ORES__DROP_ITEMS);
+        initOresDropItemsDropItemOres(cfg, CATEGORY_ORES__DROP_ITEMS);        
         initOresOreExplosionsConfig(cfg, CATEGORY_ORES__ORE_EXPLOSIONS);
         initOresOreExplosionOresConfig(cfg, CATEGORY_ORES__ORE_EXPLOSIONS__ORE_EXPLOSION_ORES);
 
@@ -224,14 +231,35 @@ public class Config {
     //
     private static void initOresOreDictionaryConfig(ConfigEx cfg, String category) {
 	
-    	boolean enabled = false;    	
+    	boolean setting = false;    	
     	for (OreDictionaryOtherData oD : OreDictionaryOtherData.values()) {
-    		enabled = cfg.getBoolean(oD.getName(), category, oD.getDefaultSetting(), "Add " + oD.getModItemDescName() + " from " + oD.getModDescName() + " to the Ore Dictionary." + oD.getConfigExtraDesc());
-    		oD.setEnabled(enabled);
+    		setting = cfg.getBoolean(oD.getName(), category, oD.getDefaultSetting(), "Add " + oD.getModItemDescName() + " from " + oD.getModDescName() + " to the Ore Dictionary." + oD.getConfigExtraDesc());
+    		oD.setEnabled(setting);
 		}
     	
     }
     
+    //
+    private static void initOresDropItems(ConfigEx cfg, String category) {
+
+    	dropItems = cfg.getBoolean("Drop items", category, oreExplosion, "Drop items instead of blocks from mined ores. Metallic ores will try to drop dusts over ingots.");
+    	dropItemsOverride = cfg.getBoolean("Drop items override", category, oreExplosionOverride, "All ores will drop items ignoring per ore settings, drop items must be enabled or this will be ignored.");
+   	
+    }
+
+    //
+    private static void initOresDropItemsDropItemOres(ConfigEx cfg, String category) {
+    	
+    	boolean setting;
+    	for (BlockRecipeData blockData : BlockRecipeData.values()) {
+    		setting = cfg.getBlockProperty(blockData.getName(), category, blockData.getDropItems());
+    		if (dropItems && dropItemsOverride) setting = true;
+    		blockData.setDropItems(setting);
+    	}
+    	
+	}
+    
+    //
     private static void initOresOreExplosionsConfig(ConfigEx cfg, String category) {
 
     	oreExplosion = cfg.getBoolean("Ore explosion", category, oreExplosion, "Enables the ability for ores to explode.");

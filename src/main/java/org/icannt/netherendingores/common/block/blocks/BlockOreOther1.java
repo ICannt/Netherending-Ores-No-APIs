@@ -81,6 +81,11 @@ public class BlockOreOther1 extends BlockVariantBase {
         return world.getBlockState(pos).getValue(VARIANT).getResistance() / 5F;
     }
     
+    @Override
+    public int getOrdinal(IBlockState state) {
+    	return BlockDataOreOther1.values()[getMetaFromState(state)].getBlockRecipeDataOrdinal();
+    }
+    
     @SideOnly(Side.CLIENT)
     public void initItemBlockModels() {
     	for (BlockDataOreOther1 variant : BlockDataOreOther1.values()) {

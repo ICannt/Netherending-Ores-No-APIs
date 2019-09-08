@@ -1,7 +1,5 @@
 package org.icannt.netherendingores.common.block.data;
 
-import org.icannt.netherendingores.lib.Log;
-
 import net.minecraft.item.EnumRarity;
 import net.minecraft.util.IStringSerializable;
 

@@ -80,6 +80,11 @@ public class BlockOreNetherModded1 extends BlockVariantBase {
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
         return world.getBlockState(pos).getValue(VARIANT).getResistance() / 5F;
     }
+    
+    @Override
+    public int getOrdinal(IBlockState state) {
+    	return BlockDataOreNetherModded1.values()[getMetaFromState(state)].getBlockRecipeDataOrdinal();
+    }
 
     @SideOnly(Side.CLIENT)
     public void initItemBlockModels() {
