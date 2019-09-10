@@ -54,5 +54,13 @@ public class OreDictionaryRegistry {
     	Log.info("Registered Ore Dictionary Entries");
 		
 	}
+	
+	public static void cacheOreDictionaryItems() {
+		for (BlockRecipeData blockData : BlockRecipeData.values()) {
+			if (blockData.getRecipeMultiplier() > 0) {
+				blockData.setDropItemObject();
+			}
+		}
+	}
 
 }

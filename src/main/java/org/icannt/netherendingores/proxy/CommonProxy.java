@@ -4,12 +4,12 @@ import java.io.File;
 
 import org.icannt.netherendingores.lib.EntityInit;
 import org.icannt.netherendingores.common.block.data.CacheBlockRecipeDataOrdinals;
+import org.icannt.netherendingores.common.registry.OreDictionaryRegistry;
 import org.icannt.netherendingores.common.registry.RegistryEvents;
 import org.icannt.netherendingores.lib.Config;
 import org.icannt.netherendingores.lib.ConfigEx;
 import org.icannt.netherendingores.lib.Info;
 
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -43,6 +43,7 @@ public abstract class CommonProxy {
         if (config.hasChanged()) {
             config.save();
         }
+        OreDictionaryRegistry.cacheOreDictionaryItems();
     }
 
 }
