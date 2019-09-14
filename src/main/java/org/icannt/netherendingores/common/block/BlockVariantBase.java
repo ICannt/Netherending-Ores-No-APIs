@@ -26,6 +26,19 @@ public class BlockVariantBase extends Block {
     }
     
     @Override
+    public Item getItemDropped(IBlockState state, Random random, int fortune) {
+    	
+    	int ordinal = getOrdinal(state);
+
+    	if (BlockRecipeData.values()[ordinal].getDropItems()) {
+    		return BlockRecipeData.values()[ordinal].getItemDropped();
+    	}
+    	
+    	return Item.getItemFromBlock(this);
+    	
+    }
+    
+    @Override
     public int damageDropped(IBlockState state) {
     	
     	int ordinal = getOrdinal(state);
@@ -47,19 +60,6 @@ public class BlockVariantBase extends Block {
     	}
     	
     	return 1;
-    	
-    }
-        
-    @Override
-    public Item getItemDropped(IBlockState state, Random random, int fortune) {
-    	
-    	int ordinal = getOrdinal(state);
-
-    	if (BlockRecipeData.values()[ordinal].getDropItems()) {
-    		return BlockRecipeData.values()[ordinal].getItemDropped();
-    	}
-    	
-    	return Item.getItemFromBlock(this);
     	
     }
     

@@ -122,9 +122,7 @@ public class Log {
     }
     
     //
-    public static void logCacheItemsSuccess(String entry, Item item) {
-    	int damage = new ItemStack(item).getItemDamage();
-    	info(""+damage);
+    public static void logCacheItemsSuccess(String entry, Item item, int damage) {
     	trace("Found Ore Dictionary entry \"" + entry + "\" for item drops. Using \"" + item.getRegistryName() + (damage > 0 ? ":" + damage : "") + "\"");
     }
     
