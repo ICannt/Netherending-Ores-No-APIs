@@ -1,10 +1,10 @@
 package org.icannt.netherendingores.lib;
 
+import static net.minecraft.util.math.MathHelper.clamp;
+
 import org.icannt.netherendingores.common.registry.BlockRecipeData;
 import org.icannt.netherendingores.common.registry.OreDictionaryOtherData;
 import org.icannt.netherendingores.proxy.CommonProxy;
-
-import static net.minecraft.util.math.MathHelper.clamp;
 
 /**
  * Created by ICannt on 25/03/18.
@@ -155,7 +155,7 @@ public class Config {
         
         initOresOreDictionaryConfig(cfg, CATEGORY_ORES__ORE_DICTIONARY);
         initOresDropItems(cfg, CATEGORY_ORES__DROP_ITEMS);
-        initOresDropItemsDropItemOres(cfg, CATEGORY_ORES__DROP_ITEMS);        
+        initOresDropItemsDropItemOres(cfg, CATEGORY_ORES__DROP_ITEMS__DROP_ITEM_ORES);        
         initOresOreExplosionsConfig(cfg, CATEGORY_ORES__ORE_EXPLOSIONS);
         initOresOreExplosionOresConfig(cfg, CATEGORY_ORES__ORE_EXPLOSIONS__ORE_EXPLOSION_ORES);
 
@@ -174,6 +174,13 @@ public class Config {
     	cfg.setCategoryComment(CATEGORY_GENERAL, "General Settings.");
     	
     	cfg.setCategoryComment(CATEGORY_MOBS, "Mob Settings.");
+
+    	cfg.setCategoryComment(CATEGORY_ORES, "Ore Settings.");
+    	cfg.setCategoryComment(CATEGORY_ORES__DROP_ITEMS, ""
+    			+ "If any of the following ores is set to true, that ore will drop items instead of ore blocks.\r\n"
+    			+ "Requires drop items to be enabled.\r\n"
+    			+ "There is an override so all ores will drop items."
+    			);
     	
     	cfg.setCategoryComment(CATEGORY_RECIPES, "Recipe Settings.");
     	cfg.setCategoryComment(CATEGORY_RECIPES__FURNACE_TO_ITEMS, ""
@@ -194,9 +201,7 @@ public class Config {
     			+ " 3 = Crush to 4x oredict ore | Smelt to 3x oredict ore.\r\n"
     			+ "     Oredict entries prefixed with \"oreDenseEnd\", \"oreDenseNether\" or \"oreDenseOverworld\" respectively.");
 
-    	cfg.setCategoryComment(CATEGORY_ORES, "Ore Settings.");
-    	
-	}
+    }
 
 	//
     private static void initGeneralSettingsConfig(ConfigEx cfg, String category) {

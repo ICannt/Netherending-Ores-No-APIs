@@ -3,7 +3,6 @@ package org.icannt.netherendingores.common.registry;
 import java.util.Random;
 
 import org.icannt.netherendingores.lib.Info;
-import org.icannt.netherendingores.lib.Log;
 import org.icannt.netherendingores.lib.StringUtil;
 
 import com.google.common.base.CaseFormat;
@@ -215,9 +214,9 @@ public enum BlockRecipeData implements IStringSerializable {
     	int bonus = fortune > 0 ? random.nextInt(fortune + 1) + 1 : 1;
     	int extra = dropItemsQuantityMax - dropItemsQuantityMin;
     	extra = extra > 0 ? random.nextInt(extra + 1) : 0;
-    	return dropItemsQuantityMin + extra * bonus;
+    	return dropItemsQuantityMin + extra * bonus * recipeMultiplier;
     	
-    	// TODO: Needs recipe multiplier implementation.
+    	// TODO: May need to improve recipeMultiplier implementation may drop a lot of... drops.
     	
     }
     
@@ -327,7 +326,7 @@ public enum BlockRecipeData implements IStringSerializable {
     }
 	
 	// 
-	private String getOreDictItemName() {
+	public String getOreDictItemName() {
 		return getOreDictOutputName(1, "smelt", "name");
 	}    
     

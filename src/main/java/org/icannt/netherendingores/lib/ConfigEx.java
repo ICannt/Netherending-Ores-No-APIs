@@ -26,7 +26,7 @@ public class ConfigEx extends Configuration {
      * @return The value of the new double property.
      */
 	public double getDouble(String name, String category, double defaultValue, double minValue, double maxValue, String comment) {
-		comment+= " [range: " + minValue + " ~ " + maxValue + ", default: " + defaultValue + "]";
+		comment += " [range: " + minValue + " ~ " + maxValue + ", default: " + defaultValue + "]";
 		return get(category, name, defaultValue, comment, minValue, maxValue).getDouble();
 	}
 	

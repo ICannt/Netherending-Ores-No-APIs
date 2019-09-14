@@ -1,5 +1,6 @@
 package org.icannt.netherendingores.common.registry;
 
+import org.icannt.netherendingores.lib.Config;
 import org.icannt.netherendingores.lib.Info;
 import org.icannt.netherendingores.lib.Log;
 
@@ -57,8 +58,14 @@ public class OreDictionaryRegistry {
 	
 	public static void cacheOreDictionaryItems() {
 		for (BlockRecipeData blockData : BlockRecipeData.values()) {
-			if (blockData.getRecipeMultiplier() > 0) {
+			if (blockData.getRecipeMultiplier() > 0 && blockData.getDropItems() && Config.dropItems) {
 				blockData.setDropItemObject();
+				if (blockData.getDropItemObject() == Items.AIR) {
+					blockData.setDropItems(false);
+					Log.logCacheItemsFail(blockData.getOreDictItemName());
+				} else {
+					Log.logCacheItemsSuccess(blockData.getOreDictItemName(), blockData.getDropItemObject());
+				}
 			}
 		}
 	}

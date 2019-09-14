@@ -1,10 +1,9 @@
 package org.icannt.netherendingores.client.entity.render;
 
-import org.icannt.netherendingores.lib.Info;
-
 import javax.annotation.Nonnull;
 
 import org.icannt.netherendingores.common.entity.EntityNetherfish;
+import org.icannt.netherendingores.lib.Info;
 
 import net.minecraft.client.model.ModelSilverfish;
 import net.minecraft.client.renderer.entity.RenderLiving;

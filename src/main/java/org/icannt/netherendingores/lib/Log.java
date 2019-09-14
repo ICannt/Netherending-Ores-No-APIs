@@ -3,6 +3,9 @@ package org.icannt.netherendingores.lib;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 /**
  * Created by ICannt on 30/05/18.
  */
@@ -117,5 +120,16 @@ public class Log {
     public static void logOreDictFail(String modName, String modItemName) {
     	warn("ItemStack for \"" + modItemName + "\" is not valid, is \"" + modName + "\" loaded properly?");
     }
-
+    
+    //
+    public static void logCacheItemsSuccess(String entry, Item item) {
+    	int damage = new ItemStack(item).getItemDamage();
+    	info(""+damage);
+    	trace("Found Ore Dictionary entry \"" + entry + "\" for item drops. Using \"" + item.getRegistryName() + (damage > 0 ? ":" + damage : "") + "\"");
+    }
+    
+    //
+    public static void logCacheItemsFail(String entry) {
+    	error("Cannot find a valid Ore Dictionary entry for \"" + entry + "\" item drops. Is a mod that can use it loaded? Defaulting to block drop mode.");
+    }
 }

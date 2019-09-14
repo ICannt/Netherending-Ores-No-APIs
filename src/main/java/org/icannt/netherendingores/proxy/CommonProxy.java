@@ -2,12 +2,12 @@ package org.icannt.netherendingores.proxy;
 
 import java.io.File;
 
-import org.icannt.netherendingores.lib.EntityInit;
 import org.icannt.netherendingores.common.block.data.CacheBlockRecipeDataOrdinals;
 import org.icannt.netherendingores.common.registry.OreDictionaryRegistry;
 import org.icannt.netherendingores.common.registry.RegistryEvents;
 import org.icannt.netherendingores.lib.Config;
 import org.icannt.netherendingores.lib.ConfigEx;
+import org.icannt.netherendingores.lib.EntityInit;
 import org.icannt.netherendingores.lib.Info;
 
 import net.minecraftforge.fml.common.Mod;

@@ -3,7 +3,6 @@ package org.icannt.netherendingores.common.block;
 import java.util.Random;
 
 import org.icannt.netherendingores.client.creativetab.TabNetherendingOres;
-import org.icannt.netherendingores.common.block.data.BlockDataOreEndVanilla;
 import org.icannt.netherendingores.common.registry.BlockRecipeData;
 import org.icannt.netherendingores.lib.Info;
 

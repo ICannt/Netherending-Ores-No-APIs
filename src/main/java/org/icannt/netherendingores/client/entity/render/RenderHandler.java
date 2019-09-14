@@ -1,7 +1,6 @@
 package org.icannt.netherendingores.client.entity.render;
 
 import org.icannt.netherendingores.common.entity.EntityNetherfish;
-import org.icannt.netherendingores.client.entity.render.RenderNetherfish;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
