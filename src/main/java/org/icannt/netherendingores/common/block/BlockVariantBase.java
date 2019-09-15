@@ -11,6 +11,8 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 
 
 /**
@@ -60,6 +62,19 @@ public class BlockVariantBase extends Block {
     	}
     	
     	return 1;
+    	
+    }
+    
+    @Override
+    public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune) {
+    	
+    	int ordinal = getOrdinal(state);
+    	
+    	if (BlockRecipeData.values()[ordinal].getDropItems()) {
+    		return BlockRecipeData.values()[ordinal].getExpDrop(fortune);
+    	}
+    	
+    	return 0;
     	
     }
     

@@ -3,6 +3,7 @@ package org.icannt.netherendingores.common.block;
 import java.util.Random;
 
 import org.icannt.netherendingores.common.entity.EntityNetherfish;
+import org.icannt.netherendingores.lib.Config;
 import org.icannt.netherendingores.lib.Info;
 
 import net.minecraft.block.BlockNetherrack;
@@ -51,13 +52,11 @@ public class BlockNetherfish extends BlockNetherrack {
     @Override
     public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune) {
 
-        if (!worldIn.isRemote && worldIn.getGameRules().getBoolean("doTileDrops")) {
+        if (!worldIn.isRemote && worldIn.getGameRules().getBoolean("doTileDrops") && Config.netherfish) {
 
             EntityNetherfish netherfish = new EntityNetherfish(worldIn);
             netherfish.setLocationAndAngles(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0F, 0.0F);
-
             worldIn.spawnEntity(netherfish);
-
             netherfish.spawnExplosionParticle();
 
         }

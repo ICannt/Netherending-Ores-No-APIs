@@ -163,7 +163,7 @@ public class Config {
         initRecipesFurnaceToItemsFurnaceToItemOresConfig(cfg, CATEGORY_RECIPES__FURNACE_TO_ITEMS__FURNACE_TO_ITEM_ORES);
         initRecipesIntegrationConfig(cfg, CATEGORY_RECIPES__INTEGRATION);
         initRecipesIntegrationThermalExpansionConfig(cfg, CATEGORY_RECIPES__INTEGRATION__THERMAL_EXPANSION);
-        initRecipesRecipeMultipliers(cfg, CATEGORY_RECIPES__RECIPE_MULTIPLIERS);
+        initRecipesRecipeMultipliersConfig(cfg, CATEGORY_RECIPES__RECIPE_MULTIPLIERS);
         initRecipesRecipeMultipliersRecipeMultiplierOresConfig(cfg, CATEGORY_RECIPES__RECIPE_MULTIPLIERS__RECIPE_MULTIPLIER_ORES);
         
 	}
@@ -226,9 +226,9 @@ public class Config {
     //
     private static void initMobsZombiePigmanConfig(ConfigEx cfg, String category) {
     	    	
-    	zombiePigmanAnger = cfg.getBoolean("Zombie Pigman anger", category, zombiePigmanAnger, "Enables the Zombie Pigman anger reaction to mining ores.");
-    	zombiePigmanAngerRangeRadius = cfg.getInt("Zombie Pigman anger range radius", category, zombiePigmanAngerRangeRadius, zombiePigmanAngerRangeRadiusMin, zombiePigmanAngerRangeRadiusMax, "Zombie Pigman anger reaction range square radius in blocks around the player.");
+    	zombiePigmanAnger = cfg.getBoolean("Zombie Pigman anger", category, zombiePigmanAnger, "Enables the Zombie Pigman anger reaction to mining ores.");  	
     	zombiePigmanAngerRangeHeight = cfg.getInt("Zombie Pigman anger range height", category, zombiePigmanAngerRangeHeight, zombiePigmanAngerRangeHeightMin, zombiePigmanAngerRangeHeightMax, "Zombie Pigman anger reaction range height in blocks up and down of the player.");
+    	zombiePigmanAngerRangeRadius = cfg.getInt("Zombie Pigman anger range radius", category, zombiePigmanAngerRangeRadius, zombiePigmanAngerRangeRadiusMin, zombiePigmanAngerRangeRadiusMax, "Zombie Pigman anger reaction range square radius in blocks around the player.");
     	zombiePigmanAngerSilkTouch = cfg.getBoolean("Zombie Pigman anger silk touch", category, zombiePigmanAngerSilkTouch, "If ores are mined with a silk touch enchantment Zombie pigmen won't react.");
     	
     }
@@ -247,8 +247,8 @@ public class Config {
     //
     private static void initOresDropItems(ConfigEx cfg, String category) {
 
-    	dropItems = cfg.getBoolean("Drop items", category, oreExplosion, "Drop items instead of blocks from mined ores. Metallic ores will try to drop dusts over ingots.");
-    	dropItemsOverride = cfg.getBoolean("Drop items override", category, oreExplosionOverride, "All ores will drop items ignoring per ore settings, drop items must be enabled or this will be ignored.");
+    	dropItems = cfg.getBoolean("Drop items", category, dropItems, "Drop items instead of blocks from mined ores. Metallic ores will try to drop dusts over ingots.");
+    	dropItemsOverride = cfg.getBoolean("Drop items override", category, dropItemsOverride, "All ores will drop items ignoring per ore settings, drop items must be enabled or this will be ignored.");
    	
     }
 
@@ -259,6 +259,7 @@ public class Config {
     	for (BlockRecipeData blockData : BlockRecipeData.values()) {
     		setting = cfg.getBlockProperty(blockData.getName(), category, blockData.getDropItems());
     		if (dropItems && dropItemsOverride) setting = true;
+    		if (!(dropItems)) setting = false;
     		blockData.setDropItems(setting);
     	}
     	
@@ -278,11 +279,12 @@ public class Config {
 
     //
     private static void initOresOreExplosionOresConfig(ConfigEx cfg, String category) {
-    	
+
     	boolean setting;
     	for (BlockRecipeData blockData : BlockRecipeData.values()) {
     		setting = cfg.getBlockProperty(blockData.getName(), category, blockData.getOreExplosion());
     		if (oreExplosion && oreExplosionOverride) setting = true;
+    		if (!(oreExplosion)) setting = false;
     		blockData.setOreExplosion(setting);
     	}
     	
@@ -303,6 +305,7 @@ public class Config {
     	for (BlockRecipeData blockData : BlockRecipeData.values()) {
     		setting = cfg.getBlockProperty(blockData.getName(), category, blockData.getFurnaceRecipeToItem());
     		if (furnaceToItem && furnaceToItemOverride) setting = true;
+    		if (!(furnaceToItem)) setting = false;
     		blockData.setFurnaceRecipeToItem(setting);
     	}
     	
@@ -346,7 +349,7 @@ public class Config {
     }
     
     //
-    private static void initRecipesRecipeMultipliers(ConfigEx cfg, String category) {
+    private static void initRecipesRecipeMultipliersConfig(ConfigEx cfg, String category) {
     	
     	recipeMultiplierOverride = cfg.getInt("Override Multipliers", category, recipeMultiplierOverride, recipeMultiplierOverrideMin, recipeMultiplierMax, "Change this setting to override all recipe multipliers, -1 means ignore.");
     	recipeMultiplierOverride = clamp(recipeMultiplierOverride, recipeMultiplierOverrideMin, recipeMultiplierMax);

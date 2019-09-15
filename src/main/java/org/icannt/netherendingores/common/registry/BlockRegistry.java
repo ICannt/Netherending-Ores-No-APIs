@@ -241,7 +241,7 @@ public class BlockRegistry {
         	}
         }
     	
-        if (result != null) {       
+        if (!(result == null)) {       
 	        for (BlockRecipeData blockData : BlockRecipeData.values()) {
 	        	if (blockData.getModBlockState() == result) {
 	        		if (blockData.getOreExplosion()) {

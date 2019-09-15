@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 public class EntityInit {
 
 	public static void registerEntities() {
-		registerEntity("netherfish", EntityNetherfish.class, Config.NETHERFISH_ENTITY_ID, 50, 12325908, 16761600);
+		if (Config.netherfish) registerEntity("netherfish", EntityNetherfish.class, Config.NETHERFISH_ENTITY_ID, 50, 12325908, 16761600);
 	}
 	
 	private static void registerEntity(String name, Class<? extends Entity> entity, int id, int range, int colorP, int colorS) {

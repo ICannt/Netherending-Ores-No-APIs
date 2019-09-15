@@ -227,6 +227,12 @@ public enum BlockRecipeData implements IStringSerializable {
     	
     }
 	
+    //
+	public int getExpDrop(int fortune) {
+		// TODO Auto-generated method stub
+		return 20;
+	}
+    
 	/**
 	 * 
 	 * @param oredictName
