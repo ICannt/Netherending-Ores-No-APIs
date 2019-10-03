@@ -10,7 +10,7 @@ import org.icannt.netherendingores.proxy.CommonProxy;
  * Created by ICannt on 25/03/18.
  */
 
-// TODO: 
+
 public class Config {
 	
 	// General

@@ -69,6 +69,7 @@ public class BlockVariantBase extends Block {
     @Override
     public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune) {
     	
+    	Random rand = world instanceof World ? ((World)world).rand : RANDOM;
     	
     	int ordinal = getOrdinal(state);
     	
