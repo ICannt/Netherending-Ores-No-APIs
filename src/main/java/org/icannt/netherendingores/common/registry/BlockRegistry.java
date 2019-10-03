@@ -21,6 +21,7 @@ import org.icannt.netherendingores.common.block.blocks.BlockOreNetherModded1;
 import org.icannt.netherendingores.common.block.blocks.BlockOreNetherModded2;
 import org.icannt.netherendingores.common.block.blocks.BlockOreNetherVanilla;
 import org.icannt.netherendingores.common.block.blocks.BlockOreOther1;
+import org.icannt.netherendingores.common.entity.EntityPrimedOre;
 import org.icannt.netherendingores.lib.Config;
 import org.icannt.netherendingores.lib.Info;
 import org.icannt.netherendingores.lib.Log;
@@ -31,9 +32,11 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -157,6 +160,9 @@ public class BlockRegistry {
     @Mod.EventBusSubscriber
     public static class BlockEventHandler {
     	
+    	// TODO: Find a new event, it needs to be an interaction event blockbreak can then cancel the explosion.
+    	// Same goes for the pigmen it should be interaction with the block not breaking it.
+    	
     	@SubscribeEvent
 	    public static void onBlockBreak(BlockEvent.BreakEvent event) {
 	    	
@@ -179,7 +185,9 @@ public class BlockRegistry {
 		
 		            if (!(silktouch && Config.oreExplosionSilkTouch)) {
 		                if (world.rand.nextDouble() <= Config.oreExplosionChance * multi) {
-		                    world.createExplosion(player, blockPos.getX(), blockPos.getY(), blockPos.getZ(), (float) Config.oreExplosionStrength, true);
+		                    //world.createExplosion(player, blockPos.getX(), blockPos.getY(), blockPos.getZ(), (float) Config.oreExplosionStrength, true);
+		                	world.spawnEntity(new EntityPrimedOre(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), blockState.getBlock()));
+		                	world.playSound(null, blockPos.getX(), blockPos.getY(), blockPos.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1F, 1F);
 		                }
 		            }
 		
@@ -231,26 +239,20 @@ public class BlockRegistry {
     
     //
     private static boolean isExplodingOre(IBlockState blockState) {
-    	
-    	IBlockState result = null;
-    	
+    	   	
         for (Block block : oreBlocks) {
         	if (blockState.getBlock() == block) {
-        		result = blockState;
+    	        for (BlockRecipeData blockData : BlockRecipeData.values()) {
+    	        	if (blockData.getModBlock() == blockState.getBlock() && blockData.getBlockMeta() == blockState.getBlock().getMetaFromState(blockState)) {
+    	        		if (blockData.getOreExplosion()) {
+    	        			return true;
+    	        		} else {
+    	        			break;
+    	        		}
+    	        	}
+    	        }
         		break;
         	}
-        }
-    	
-        if (!(result == null)) {       
-	        for (BlockRecipeData blockData : BlockRecipeData.values()) {
-	        	if (blockData.getModBlockState() == result) {
-	        		if (blockData.getOreExplosion()) {
-	        			return true;
-	        		} else {
-	        			break;
-	        		}
-	        	}
-	        }
         }
         
         return false;

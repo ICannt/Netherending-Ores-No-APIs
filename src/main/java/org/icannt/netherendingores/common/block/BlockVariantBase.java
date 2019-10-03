@@ -13,6 +13,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 
 /**
@@ -23,7 +24,7 @@ public class BlockVariantBase extends Block {
     public BlockVariantBase(Material material, MapColor mapColor, String registry) {
         super(material, mapColor);
         setRegistryName(Info.MOD_ID, registry);
-        setTranslationKey(getRegistryName().toString());
+        setTranslationKey(Info.MOD_ID  + ":" + registry);
         setCreativeTab(TabNetherendingOres.NETHERENDING_ORES_TAB);
     }
     
@@ -68,10 +69,11 @@ public class BlockVariantBase extends Block {
     @Override
     public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune) {
     	
+    	
     	int ordinal = getOrdinal(state);
     	
     	if (BlockRecipeData.values()[ordinal].getDropItems()) {
-    		return BlockRecipeData.values()[ordinal].getExpDrop(fortune);
+    		return BlockRecipeData.values()[ordinal].getExpDrop(fortune, rand);
     	}
     	
     	return 0;

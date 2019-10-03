@@ -20,6 +20,9 @@ public class Config {
 	// Mobs
 	
     public static final int NETHERFISH_ENTITY_ID = 667;
+    public static final int NETHERFISH_TRACKING_RANGE = 50;
+    public static final int NETHERFISH_SPAWN_EGG_PRIMARY_COLOR = 12325908;
+    public static final int NETHERFISH_SPAWN_EGG_SECONDARY_COLOR = 16761600;
 
     public static boolean netherfish = true;
     public static double netherfishAttackDamage = 0.5D;
@@ -50,6 +53,8 @@ public class Config {
     
     public static boolean dropItems = false;
     public static boolean dropItemsOverride = false;
+
+    public static final int ORE_EXPLOSION_FUSE_LENGTH_TICKS = 80;
     
     public static boolean oreExplosion = false;
     public static double oreExplosionChance = 0.125D;
