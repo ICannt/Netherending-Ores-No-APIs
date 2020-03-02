@@ -25,9 +25,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by ICannt on 02/03/20.
  */
-public class BlockEndermite extends Block {
+public class BlockEndEndermite extends Block {
 
-    public BlockEndermite() {
+    public BlockEndEndermite() {
         super(Material.ROCK, MapColor.SAND);
         setRegistryName(Info.MOD_ID, "block_endermite");
         setTranslationKey(getRegistryName().toString());

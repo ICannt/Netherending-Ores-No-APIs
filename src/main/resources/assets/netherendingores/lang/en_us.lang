@@ -9,8 +9,8 @@ itemGroup.netherendingores=Netherending Ores
 tile.netherendingores:creative_tab.name=Creative Tab Block
 
 # Monster Egg
-tile.netherendingores:block_netherfish.name=Netherrack Monster Egg
-tile.netherendingores:block_endermite.name=End Stone Monster Egg
+tile.netherendingores:block_nether_netherfish.name=Netherrack Netherfish Monster Egg
+tile.netherendingores:block_end_endermite.name=End Stone Endermite Monster Egg
 
 # Modded End Ores 1
 tile.netherendingores:ore_end_modded_1.aluminum_ore.name=End Aluminum Ore

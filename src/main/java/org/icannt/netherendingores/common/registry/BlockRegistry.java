@@ -13,8 +13,8 @@ import org.icannt.netherendingores.client.block.itemblock.ItemBlockOreNetherModd
 import org.icannt.netherendingores.client.block.itemblock.ItemBlockOreNetherVanilla;
 import org.icannt.netherendingores.client.block.itemblock.ItemBlockOreOther1;
 import org.icannt.netherendingores.common.block.BlockCreativeTab;
-import org.icannt.netherendingores.common.block.BlockEndermite;
-import org.icannt.netherendingores.common.block.BlockNetherfish;
+import org.icannt.netherendingores.common.block.BlockEndEndermite;
+import org.icannt.netherendingores.common.block.BlockNetherNetherfish;
 import org.icannt.netherendingores.common.block.blocks.BlockOreEndModded1;
 import org.icannt.netherendingores.common.block.blocks.BlockOreEndModded2;
 import org.icannt.netherendingores.common.block.blocks.BlockOreEndVanilla;
@@ -60,11 +60,11 @@ public class BlockRegistry {
 	@GameRegistry.ObjectHolder("creative_tab")
     public static final BlockCreativeTab CREATIVE_TAB = new BlockCreativeTab();
 
-	@GameRegistry.ObjectHolder("block_endermite")
-    public static final BlockEndermite BLOCK_ENDERMITE = new BlockEndermite();	
+	@GameRegistry.ObjectHolder("block_end_endermite")
+    public static final BlockEndEndermite BLOCK_END_ENDERMITE = new BlockEndEndermite();	
 	
-	@GameRegistry.ObjectHolder("block_netherfish")
-    public static final BlockNetherfish BLOCK_NETHERFISH = new BlockNetherfish();	
+	@GameRegistry.ObjectHolder("block_nether_netherfish")
+    public static final BlockNetherNetherfish BLOCK_NETHER_NETHERFISH = new BlockNetherNetherfish();	
        
     @GameRegistry.ObjectHolder("ore_end_modded_1")
     public static final BlockOreEndModded1 ORE_END_MODDED_1 = new BlockOreEndModded1();
@@ -89,8 +89,8 @@ public class BlockRegistry {
 
     private static final Block[] blocks = {
 		CREATIVE_TAB,
-		BLOCK_NETHERFISH,
-		BLOCK_ENDERMITE,
+		BLOCK_END_ENDERMITE,
+		BLOCK_NETHER_NETHERFISH,
         ORE_END_MODDED_1,
         ORE_END_MODDED_2,
         ORE_END_VANILLA,
@@ -116,8 +116,8 @@ public class BlockRegistry {
     
     private static final ItemBlock[] itemBlocks = {
     	new ItemBlockBasic(CREATIVE_TAB),
-    	new ItemBlockBasic(BLOCK_NETHERFISH),
-    	new ItemBlockBasic(BLOCK_ENDERMITE),
+    	new ItemBlockBasic(BLOCK_END_ENDERMITE),
+    	new ItemBlockBasic(BLOCK_NETHER_NETHERFISH),
         new ItemBlockOreEndModded1(ORE_END_MODDED_1),
         new ItemBlockOreEndModded2(ORE_END_MODDED_2),
         new ItemBlockOreEndVanilla(ORE_END_VANILLA),
@@ -268,8 +268,8 @@ public class BlockRegistry {
     @SideOnly(Side.CLIENT)
     public static void initModels() {
     	CREATIVE_TAB.initItemBlockModels();
-    	BLOCK_NETHERFISH.initItemBlockModels();
-    	BLOCK_ENDERMITE.initItemBlockModels();
+    	BLOCK_END_ENDERMITE.initItemBlockModels();
+    	BLOCK_NETHER_NETHERFISH.initItemBlockModels();
     	ORE_END_MODDED_1.initItemBlockModels();
     	ORE_END_MODDED_2.initItemBlockModels();
     	ORE_END_VANILLA.initItemBlockModels();

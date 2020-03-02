@@ -174,7 +174,7 @@ public class EntityNetherfish extends EntitySilverfish {
                             BlockPos friendBlock = blockpos.add(x, y, z);
                             IBlockState iblockstate = world.getBlockState(friendBlock);
 
-                            if (iblockstate.getBlock() == BlockRegistry.BLOCK_NETHERFISH) {
+                            if (iblockstate.getBlock() == BlockRegistry.BLOCK_NETHER_NETHERFISH) {
 
                                 if (ForgeEventFactory.getMobGriefingEvent(world, this.netherfish)) world.destroyBlock(friendBlock, true);
                                 else world.setBlockState(friendBlock, Blocks.NETHERRACK.getDefaultState(), 3);
@@ -252,7 +252,7 @@ public class EntityNetherfish extends EntitySilverfish {
 
                 if (blockState == Blocks.NETHERRACK.getDefaultState()) {
 
-                    world.setBlockState(blockPos, BlockRegistry.BLOCK_NETHERFISH.getDefaultState(), 3);
+                    world.setBlockState(blockPos, BlockRegistry.BLOCK_NETHER_NETHERFISH.getDefaultState(), 3);
 
                     this.entity.spawnExplosionParticle();
                     this.entity.setDead();

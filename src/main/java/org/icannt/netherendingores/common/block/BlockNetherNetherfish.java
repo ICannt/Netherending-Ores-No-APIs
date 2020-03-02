@@ -22,9 +22,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by ICannt on 28/07/19.
  */
-public class BlockNetherfish extends BlockNetherrack {
+public class BlockNetherNetherfish extends BlockNetherrack {
 
-    public BlockNetherfish() {
+    public BlockNetherNetherfish() {
         setRegistryName(Info.MOD_ID, "block_netherfish");
         setTranslationKey(getRegistryName().toString());
     }
