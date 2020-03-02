@@ -13,6 +13,7 @@ import org.icannt.netherendingores.client.block.itemblock.ItemBlockOreNetherModd
 import org.icannt.netherendingores.client.block.itemblock.ItemBlockOreNetherVanilla;
 import org.icannt.netherendingores.client.block.itemblock.ItemBlockOreOther1;
 import org.icannt.netherendingores.common.block.BlockCreativeTab;
+import org.icannt.netherendingores.common.block.BlockEndermite;
 import org.icannt.netherendingores.common.block.BlockNetherfish;
 import org.icannt.netherendingores.common.block.blocks.BlockOreEndModded1;
 import org.icannt.netherendingores.common.block.blocks.BlockOreEndModded2;
@@ -58,6 +59,9 @@ public class BlockRegistry {
 
 	@GameRegistry.ObjectHolder("creative_tab")
     public static final BlockCreativeTab CREATIVE_TAB = new BlockCreativeTab();
+
+	@GameRegistry.ObjectHolder("block_endermite")
+    public static final BlockEndermite BLOCK_ENDERMITE = new BlockEndermite();	
 	
 	@GameRegistry.ObjectHolder("block_netherfish")
     public static final BlockNetherfish BLOCK_NETHERFISH = new BlockNetherfish();	
@@ -86,6 +90,7 @@ public class BlockRegistry {
     private static final Block[] blocks = {
 		CREATIVE_TAB,
 		BLOCK_NETHERFISH,
+		BLOCK_ENDERMITE,
         ORE_END_MODDED_1,
         ORE_END_MODDED_2,
         ORE_END_VANILLA,
@@ -112,6 +117,7 @@ public class BlockRegistry {
     private static final ItemBlock[] itemBlocks = {
     	new ItemBlockBasic(CREATIVE_TAB),
     	new ItemBlockBasic(BLOCK_NETHERFISH),
+    	new ItemBlockBasic(BLOCK_ENDERMITE),
         new ItemBlockOreEndModded1(ORE_END_MODDED_1),
         new ItemBlockOreEndModded2(ORE_END_MODDED_2),
         new ItemBlockOreEndVanilla(ORE_END_VANILLA),
@@ -263,6 +269,7 @@ public class BlockRegistry {
     public static void initModels() {
     	CREATIVE_TAB.initItemBlockModels();
     	BLOCK_NETHERFISH.initItemBlockModels();
+    	BLOCK_ENDERMITE.initItemBlockModels();
     	ORE_END_MODDED_1.initItemBlockModels();
     	ORE_END_MODDED_2.initItemBlockModels();
     	ORE_END_VANILLA.initItemBlockModels();

@@ -19,6 +19,8 @@ public class Config {
 	
 	// Mobs
 	
+	public static final int PRIMED_ORE_ENTITY_ID = 668;
+	
     public static final int NETHERFISH_ENTITY_ID = 667;
     public static final int NETHERFISH_TRACKING_RANGE = 50;
     public static final int NETHERFISH_SPAWN_EGG_PRIMARY_COLOR = 12325908;

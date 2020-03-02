@@ -1,10 +1,16 @@
 ### Creative Tab ###
 
 itemGroup.netherendingores=Netherending Ores
-tile.netherendingores:creative_tab.name=Creative Tab Block
 
 
 ### Blocks ###
+
+# Creative Tab
+tile.netherendingores:creative_tab.name=Creative Tab Block
+
+# Monster Egg
+tile.netherendingores:block_netherfish.name=Netherrack Monster Egg
+tile.netherendingores:block_endermite.name=End Stone Monster Egg
 
 # Modded End Ores 1
 tile.netherendingores:ore_end_modded_1.aluminum_ore.name=End Aluminum Ore
@@ -101,3 +107,10 @@ tile.netherendingores:ore_other_1.overworld_icestone_ore.name=Overworld Icestone
 ### Entities ###
 
 entity.netherfish.name=Netherfish
+
+
+### Subtitles ###
+
+subtitles.entity.netherfish.ambient=Netherfish hisses
+subtitles.entity.netherfish.death=Netherfish dies
+subtitles.entity.netherfish.hurt=Netherfish hurts

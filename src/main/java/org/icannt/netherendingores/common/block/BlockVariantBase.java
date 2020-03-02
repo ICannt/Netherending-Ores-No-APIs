@@ -24,7 +24,7 @@ public class BlockVariantBase extends Block {
     public BlockVariantBase(Material material, MapColor mapColor, String registry) {
         super(material, mapColor);
         setRegistryName(Info.MOD_ID, registry);
-        setTranslationKey(Info.MOD_ID  + ":" + registry);
+        setTranslationKey(getRegistryName().toString());
         setCreativeTab(TabNetherendingOres.NETHERENDING_ORES_TAB);
     }
     

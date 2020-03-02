@@ -1,8 +1,10 @@
-package org.icannt.netherendingores.lib;
+package org.icannt.netherendingores.common.registry;
 
 import org.icannt.netherendingores.NetherendingOres;
 import org.icannt.netherendingores.common.entity.EntityNetherfish;
 import org.icannt.netherendingores.common.entity.EntityPrimedOre;
+import org.icannt.netherendingores.lib.Config;
+import org.icannt.netherendingores.lib.Info;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -15,7 +17,7 @@ public class EntityInit {
 
 	public static void registerEntities() {
 		if (Config.netherfish) registerEntity("netherfish", EntityNetherfish.class, Config.NETHERFISH_ENTITY_ID, Config.NETHERFISH_TRACKING_RANGE, Config.NETHERFISH_SPAWN_EGG_PRIMARY_COLOR, Config.NETHERFISH_SPAWN_EGG_SECONDARY_COLOR);
-		registerEntity("primedOre", EntityPrimedOre.class, 668, 0);
+		registerEntity("primedOre", EntityPrimedOre.class, Config.PRIMED_ORE_ENTITY_ID, 0);
 	}
 	
 	private static void registerEntity(String entityName, Class<? extends Entity> entityClass, int id, int trackingRange) {
