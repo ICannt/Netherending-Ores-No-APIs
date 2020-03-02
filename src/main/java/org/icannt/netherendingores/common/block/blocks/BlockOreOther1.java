@@ -61,11 +61,6 @@ public class BlockOreOther1 extends BlockVariantBase {
     }
     
     @Override
-    public int damageDropped(IBlockState state) {
-        return getMetaFromState(state);
-    }
-    
-    @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
         return state.getValue(VARIANT).getLight();
     }

@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 /**
  * Created by ICannt on 30/05/18.

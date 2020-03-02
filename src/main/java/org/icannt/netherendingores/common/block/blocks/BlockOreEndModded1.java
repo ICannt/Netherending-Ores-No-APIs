@@ -28,14 +28,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockOreEndModded1 extends BlockVariantBase {
 
     private static final PropertyEnum<BlockDataOreEndModded1> VARIANT = PropertyEnum.create("blocks", BlockDataOreEndModded1.class);
-    
+
     public BlockOreEndModded1() {
         super(Material.ROCK, MapColor.GRAY, "ore_end_modded_1");
         for (BlockDataOreEndModded1 variant : BlockDataOreEndModded1.values()) {
         	this.setHarvestLevel("pickaxe", variant.getHarvestLevel(), getStateFromMeta(variant.ordinal()));
         }
     }
-    
+
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, VARIANT);
