@@ -35,16 +35,23 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -164,39 +171,66 @@ public class BlockRegistry {
     	// Same goes for the pigmen it should be interaction with the block not breaking it.
     	
     	@SubscribeEvent
-	    public static void onBlockBreak(BlockEvent.BreakEvent event) {
-	    	
-	        boolean silktouch = hasEnchant(event.getPlayer(), Enchantments.SILK_TOUCH);
-	        boolean fortune = hasEnchant(event.getPlayer(), Enchantments.FORTUNE);
-	
-	        World world = event.getWorld();
+//	    public static void onBlockBreak(BlockEvent.BreakEvent event) {
+//
+//	        World world = event.getWorld();
+//	        BlockPos blockPos = event.getPos();
+//	        IBlockState blockState = event.getState();
+//	        EntityPlayer player = event.getPlayer();
+
+    	
+//        public static void onBreakSpeed(PlayerEvent.BreakSpeed event) {
+//        	
+//	        World world = event.getEntity().world;
+//	        BlockPos blockPos = event.getPos();
+//	        IBlockState blockState = event.getState();
+//	        EntityPlayer player = event.getEntityPlayer();
+    	
+
+    	public static void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+        	
+    		World world = event.getWorld();
 	        BlockPos blockPos = event.getPos();
-	        IBlockState blockState = event.getState();
-	        EntityPlayer player = event.getPlayer();
-	
-	        if (Config.zombiePigmanAnger && isAngeringOre(blockState)) {
-	            if (!(silktouch && Config.zombiePigmanAngerSilkTouch)) angerPigmen(world, blockPos, player);
-	        }
-	
+	        IBlockState blockState = event.getWorld().getBlockState(blockPos);
+	        EntityPlayer player = event.getEntityPlayer();
+	        
 	        if (!player.isCreative()) {
-		        if (isExplodingOre(blockState)) {
+	    		
+		        boolean silktouch = hasEnchant(event.getEntityPlayer(), Enchantments.SILK_TOUCH);
+		        boolean fortune = hasEnchant(event.getEntityPlayer(), Enchantments.FORTUNE);
 		
+		        if (Config.zombiePigmanAnger && isAngeringOre(blockState)) {
+		            if (!(silktouch && Config.zombiePigmanAngerSilkTouch)) angerPigmen(world, blockPos, player);
+		        }
+
+		        if (isExplodingOre(blockState)) {
+		        	
+		        	Block block = blockState.getBlock();
+		        	TileEntity blockEnt = block.createTileEntity(world, blockState);
+		        	blockEnt.getTileData().getCompoundTag("touched").get;
+		        	
 		            int multi = Config.oreExplosionFortune && fortune ? 2 : 1;
 		
 		            if (!(silktouch && Config.oreExplosionSilkTouch)) {
 		                if (world.rand.nextDouble() <= Config.oreExplosionChance * multi) {
-		                    //world.createExplosion(player, blockPos.getX(), blockPos.getY(), blockPos.getZ(), (float) Config.oreExplosionStrength, true);
-		                	world.spawnEntity(new EntityPrimedOre(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), blockState.getBlock()));
-		                	world.playSound(null, blockPos.getX(), blockPos.getY(), blockPos.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1F, 1F);
+		                	world.spawnEntity(new EntityPrimedOre(world, blockPos.getX()+0.5F, blockPos.getY(), blockPos.getZ()+0.5F, blockState.getBlock()));
+		                	world.playSound(null, blockPos.getX()+0.5F, blockPos.getY(), blockPos.getZ()+0.5F, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1F, 1F);
 		                }
-		            }
-		
+		            }		            
 		        }
-	        }
-	
-	    }
+		        
+    		}
+        }
     }
 
+    protected void writeBlockToNBT(NBTTagCompound compound) {
+    	
+    }
+    
+    protected void readBlockFromNBT(NBTTagCompound compound) {
+    	
+    }
+    
     private static void angerPigmen(World world, BlockPos blockPos, EntityPlayer player) {
 
         BlockPos start = new BlockPos(blockPos).add(-Config.zombiePigmanAngerRangeRadius, -Config.zombiePigmanAngerRangeHeight, -Config.zombiePigmanAngerRangeRadius);
