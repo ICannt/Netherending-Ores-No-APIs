@@ -26,7 +26,6 @@ public class Config {
     public static final int NETHERFISH_SPAWN_EGG_PRIMARY_COLOR = 12325908;
     public static final int NETHERFISH_SPAWN_EGG_SECONDARY_COLOR = 16761600;
 
-    public static boolean netherfish = true;
     public static double netherfishAttackDamage = 0.5D;
     private static double netherfishAttackDamageMin = 0D;
     private static double netherfishAttackDamageMax = 1000D;
@@ -41,6 +40,9 @@ public class Config {
     private static double netherfishMovementSpeedMax = 1D;
     public static boolean netherfishSetFire = true;
     public static boolean netherfishWAILA = true;
+    
+    public static boolean endermiteEndermanHostility = true;
+    public static boolean endermiteWAILA = true;
     
     public static boolean zombiePigmanAnger = true;
     public static int zombiePigmanAngerRangeHeight = 16;
@@ -58,7 +60,7 @@ public class Config {
 
     public static final int ORE_EXPLOSION_FUSE_LENGTH_TICKS = 80;
     
-    public static boolean oreExplosion = false;
+    public static boolean oreExplosion = true;
     public static double oreExplosionChance = 0.125D;
     private static double oreExplosionChanceMin = 0D;
     private static double oreExplosionChanceMax = 1D;
@@ -115,6 +117,7 @@ public class Config {
 	private static final String CATEGORY_GENERAL = "general";
 	
 	private static final String CATEGORY_MOBS = "mobs";
+	private static final String CATEGORY_MOBS__ENDERMITE = "mobs.endermite";
 	private static final String CATEGORY_MOBS__NETHERRFISH = "mobs.netherfish";
 	private static final String CATEGORY_MOBS__ZOMBIE_PIGMAN = "mobs.zombie pigman";
 	
@@ -158,6 +161,7 @@ public class Config {
         initGeneralSettingsConfig(cfg, CATEGORY_GENERAL);
 
         initMobsNetherfishConfig(cfg, CATEGORY_MOBS__NETHERRFISH);
+        initMobsEndermiteConfig(cfg, CATEGORY_MOBS__ENDERMITE);
         initMobsZombiePigmanConfig(cfg, CATEGORY_MOBS__ZOMBIE_PIGMAN);
         
         initOresOreDictionaryConfig(cfg, CATEGORY_ORES__ORE_DICTIONARY);
@@ -218,9 +222,16 @@ public class Config {
     }
 
     //
+    private static void initMobsEndermiteConfig(ConfigEx cfg, String category) {
+    	
+    	endermiteEndermanHostility = cfg.getBoolean("Endermite Enderman hostility", category, endermiteEndermanHostility, "Player spawned Endermites from monster eggs are treated as hostile by Endermen. Can trap players in bad situations.");
+    	endermiteWAILA = cfg.getBoolean("Endermite waila/hwyla", category, endermiteWAILA, "Enables the Endermite spawn blocks to be hidden from WAILA/HWYLA i.e. show as End Stone.");
+    	
+    }
+    
+    //
     private static void initMobsNetherfishConfig(ConfigEx cfg, String category) {
     	
-    	netherfish = cfg.getBoolean("Netherfish", category, netherfish, "Enable Netherfish so the mob is active.");
         netherfishAttackDamage = cfg.getDouble("Netherfish attack damage", category, netherfishAttackDamage, netherfishAttackDamageMin, netherfishAttackDamageMax, "Netherfish attack damage multiplier.");
         netherfishKnockbackResistance = cfg.getDouble("Netherfish knockback resistance", category, netherfishKnockbackResistance, netherfishKnockbackResistanceMin, netherfishKnockbackResistanceMax, "Netherfish knockback resistance multiplier.");
         netherfishMaxHealth = cfg.getDouble("Netherfish maximum health", category, netherfishMaxHealth, netherfishMaxHealthMin, netherfishMaxHealthMax, "Netherfish maximum health in half hearts.");
