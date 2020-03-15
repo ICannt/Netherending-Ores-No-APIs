@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.icannt.netherendingores.client.block.ItemBlockBasic;
+import org.icannt.netherendingores.client.block.itemblock.ItemBlockBasic;
 import org.icannt.netherendingores.client.block.itemblock.ItemBlockOreEndModded1;
 import org.icannt.netherendingores.client.block.itemblock.ItemBlockOreEndModded2;
 import org.icannt.netherendingores.client.block.itemblock.ItemBlockOreEndVanilla;
@@ -12,9 +12,9 @@ import org.icannt.netherendingores.client.block.itemblock.ItemBlockOreNetherModd
 import org.icannt.netherendingores.client.block.itemblock.ItemBlockOreNetherModded2;
 import org.icannt.netherendingores.client.block.itemblock.ItemBlockOreNetherVanilla;
 import org.icannt.netherendingores.client.block.itemblock.ItemBlockOreOther1;
-import org.icannt.netherendingores.common.block.BlockCreativeTab;
-import org.icannt.netherendingores.common.block.BlockEndEndermite;
-import org.icannt.netherendingores.common.block.BlockNetherNetherfish;
+import org.icannt.netherendingores.common.block.blocks.BlockCreativeTab;
+import org.icannt.netherendingores.common.block.blocks.BlockMonsterEndEndermite;
+import org.icannt.netherendingores.common.block.blocks.BlockMonsterNetherNetherfish;
 import org.icannt.netherendingores.common.block.blocks.BlockOreEndModded1;
 import org.icannt.netherendingores.common.block.blocks.BlockOreEndModded2;
 import org.icannt.netherendingores.common.block.blocks.BlockOreEndVanilla;
@@ -22,25 +22,24 @@ import org.icannt.netherendingores.common.block.blocks.BlockOreNetherModded1;
 import org.icannt.netherendingores.common.block.blocks.BlockOreNetherModded2;
 import org.icannt.netherendingores.common.block.blocks.BlockOreNetherVanilla;
 import org.icannt.netherendingores.common.block.blocks.BlockOreOther1;
-import org.icannt.netherendingores.common.entity.EntityPrimedOre;
 import org.icannt.netherendingores.lib.Config;
 import org.icannt.netherendingores.lib.Info;
 import org.icannt.netherendingores.lib.Log;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -61,10 +60,10 @@ public class BlockRegistry {
     public static final BlockCreativeTab CREATIVE_TAB = new BlockCreativeTab();
 
 	@GameRegistry.ObjectHolder("block_end_endermite")
-    public static final BlockEndEndermite BLOCK_END_ENDERMITE = new BlockEndEndermite();	
+    public static final BlockMonsterEndEndermite BLOCK_END_ENDERMITE = new BlockMonsterEndEndermite();	
 	
 	@GameRegistry.ObjectHolder("block_nether_netherfish")
-    public static final BlockNetherNetherfish BLOCK_NETHER_NETHERFISH = new BlockNetherNetherfish();	
+    public static final BlockMonsterNetherNetherfish BLOCK_NETHER_NETHERFISH = new BlockMonsterNetherNetherfish();	
        
     @GameRegistry.ObjectHolder("ore_end_modded_1")
     public static final BlockOreEndModded1 ORE_END_MODDED_1 = new BlockOreEndModded1();
@@ -104,7 +103,7 @@ public class BlockRegistry {
         Blocks.QUARTZ_ORE
     */
     
-    private static Block[] oreBlocks = {
+    private static final Block[] oreBlocks = {
         ORE_END_MODDED_1,
         ORE_END_MODDED_2,
         ORE_END_VANILLA,
@@ -248,7 +247,7 @@ public class BlockRegistry {
     	   	
         for (Block block : oreBlocks) {
         	if (blockState.getBlock() == block) {
-    	        for (BlockRecipeData blockData : BlockRecipeData.values()) {
+    	        for (BlockData blockData : BlockData.values()) {
     	        	if (blockData.getModBlock() == blockState.getBlock() && blockData.getBlockMeta() == blockState.getBlock().getMetaFromState(blockState)) {
     	        		if (blockData.getOreExplosion()) {
     	        			return true;
@@ -267,16 +266,16 @@ public class BlockRegistry {
     
     @SideOnly(Side.CLIENT)
     public static void initModels() {
+    	
     	CREATIVE_TAB.initItemBlockModels();
     	BLOCK_END_ENDERMITE.initItemBlockModels();
     	BLOCK_NETHER_NETHERFISH.initItemBlockModels();
-    	ORE_END_MODDED_1.initItemBlockModels();
-    	ORE_END_MODDED_2.initItemBlockModels();
-    	ORE_END_VANILLA.initItemBlockModels();
-    	ORE_NETHER_MODDED_1.initItemBlockModels();
-    	ORE_NETHER_MODDED_2.initItemBlockModels();
-    	ORE_NETHER_VANILLA.initItemBlockModels();
-    	ORE_OTHER_1.initItemBlockModels();
+    	
+    	for (BlockData blockData : BlockData.values()) {
+    					
+    		ModelLoader.setCustomModelResourceLocation(blockData.getModBlockItem(), blockData.getBlockMeta(), new ModelResourceLocation(blockData.getModBlockItem().getRegistryName(), "blocks=" + blockData.getModBlockStateNameValue()));
+    	}
+    	
     }
 
 }

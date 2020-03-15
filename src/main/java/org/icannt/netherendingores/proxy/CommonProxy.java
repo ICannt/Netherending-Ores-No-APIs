@@ -2,10 +2,13 @@ package org.icannt.netherendingores.proxy;
 
 import java.io.File;
 
-import org.icannt.netherendingores.common.block.data.CacheBlockRecipeDataOrdinals;
+import org.icannt.netherendingores.common.block.data.CacheBlockDataOrdinals;
 import org.icannt.netherendingores.common.registry.EntityInit;
 import org.icannt.netherendingores.common.registry.OreDictionaryRegistry;
 import org.icannt.netherendingores.common.registry.RegistryEvents;
+/* DISABLED NO API'S
+import org.icannt.netherendingores.integration.common.registry.RegistryIntegrationEvents;
+*/
 import org.icannt.netherendingores.lib.Config;
 import org.icannt.netherendingores.lib.ConfigEx;
 import org.icannt.netherendingores.lib.Info;
@@ -25,7 +28,7 @@ public abstract class CommonProxy {
 	public static ConfigEx config;
 	
     public void preInit(FMLPreInitializationEvent event) {
-    	CacheBlockRecipeDataOrdinals.cacheOrdinals();
+    	CacheBlockDataOrdinals.cacheOrdinals();
         File directory = event.getModConfigurationDirectory();
         config = new ConfigEx(new File(directory.getPath(), "Netherending Ores.cfg"), Info.CFG_VERSION);
         Config.readConfig();
